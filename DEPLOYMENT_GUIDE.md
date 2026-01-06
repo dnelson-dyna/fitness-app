@@ -71,15 +71,15 @@ After deployment, configure environment variables in Azure Portal:
 **Static Web App → Configuration → Environment Variables**:
 
 ```
-COSMOS_ENDPOINT=https://fitness-app-cosmos-1767729895.documents.azure.com:443/
-COSMOS_KEY=6KEnPPlKSdGIm2bLzWSfl4aDOJqmRxvSphd5ndmkrLLYfCLUMGGU5xNuOx1cxRAgrBv6O8d8abZDACDbU5eYhQ==
+COSMOS_ENDPOINT=<your-cosmos-endpoint>
+COSMOS_KEY=<your-cosmos-key>
 COSMOS_DATABASE_NAME=fitnessapp
 COSMOS_CONTAINER_WORKOUTS=workouts
 COSMOS_CONTAINER_MEALS=meals
 COSMOS_CONTAINER_USERS=users
 COSMOS_CONTAINER_PROGRESS=progress
-AZURE_OPENAI_ENDPOINT=https://fitness-app-openai.openai.azure.com/
-AZURE_OPENAI_KEY=DnQhHsIFpRjbcDgGmGm2yaaFlpxj3Zta6Kg9H642WiY9He0buiTwJQQJ99CAACYeBjFXJ3w3AAABACOGDUtq
+AZURE_OPENAI_ENDPOINT=<your-openai-endpoint>
+AZURE_OPENAI_KEY=<your-openai-key>
 AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1-mini
 AZURE_OPENAI_API_VERSION=2024-08-01-preview
 NODE_ENV=production

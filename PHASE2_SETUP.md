@@ -44,8 +44,8 @@ az login
 5. Deploy a model:
    - Go to "Model deployments" → "Manage Deployments"
    - Click "Create new deployment"
-   - Model: `gpt-4` or `gpt-35-turbo`
-   - Deployment name: `gpt-4`
+   - Model: `gpt-4.1-mini`
+   - Deployment name: `gpt-4.1-mini`
 
 ### 2. Create Azure Cosmos DB
 
@@ -60,6 +60,7 @@ az login
 4. After creation:
    - Go to "Keys"
    - Copy **URI** and **PRIMARY KEY**
+   - Save these securely - you'll need them for deployment
 
 ### 3. Create Azure AD B2C Tenant (Optional - for authentication)
 
