@@ -1,0 +1,41 @@
+{
+  "name": "fitness-app-server",
+  "version": "1.0.0",
+  "description": "FitFlow backend API with Azure services",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": ["fitness", "azure", "openai", "cosmosdb"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/cosmos": "^4.2.1",
+    "@azure/identity": "^4.5.0",
+    "@azure/openai": "^2.0.0",
+    "@azure/msal-node": "^2.16.2",
+    "openai": "^4.77.3",
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "helmet": "^8.0.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.1",
+    "express-validator": "^7.2.1",
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "eslint": "^9.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "@typescript-eslint/parser": "^8.19.1"
+  }
+}
