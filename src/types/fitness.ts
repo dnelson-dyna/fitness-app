@@ -6,7 +6,11 @@ export type FitnessGoal = 'toning' | 'muscle' | 'cardio' | 'weightloss' | 'stren
 
 export type DietaryPreference = 'standard' | 'vegetarian' | 'keto' | 'highprotein' | 'glutenfree' | 'dairyfree';
 
-export type BodyArea = 'chest' | 'back' | 'shoulders' | 'arms' | 'legs' | 'core' | 'fullbody' | 'muscle' | 'cardio';
+export type WorkoutBodyArea = 'chest' | 'back' | 'shoulders' | 'arms' | 'legs' | 'core' | 'fullbody';
+
+export type MealPlanBodyArea = 'fullbody' | 'muscle' | 'cardio';
+
+export type BodyArea = WorkoutBodyArea | MealPlanBodyArea;
 
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 

@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
+import type { ReactElement } from 'react';
 
 interface NavItem {
   path: string;
   label: string;
-  icon: JSX.Element;
+  icon: ReactElement;
 }
 
 export default function Navigation() {

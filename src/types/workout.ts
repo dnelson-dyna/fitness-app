@@ -42,6 +42,6 @@ export interface WorkoutStats {
   totalCaloriesBurned: number;
   averageDuration: number;
   workoutsByGoal: Record<FitnessGoal, number>;
-  workoutsByArea: Record<BodyArea, number>;
+  workoutsByArea: Partial<Record<BodyArea, number>>;
   recentWorkouts: Workout[];
 }

@@ -1,9 +1,9 @@
 import { Card } from '../Common';
-import type { FitnessGoal, BodyArea } from '../../types';
+import type { FitnessGoal, BodyArea, WorkoutBodyArea } from '../../types';
 
 interface ChartsProps {
   workoutsByGoal: Record<FitnessGoal, number>;
-  workoutsByArea: Record<BodyArea, number>;
+  workoutsByArea: Partial<Record<BodyArea, number>>;
 }
 
 export default function Charts({ workoutsByGoal, workoutsByArea }: ChartsProps) {
@@ -15,7 +15,7 @@ export default function Charts({ workoutsByGoal, workoutsByArea }: ChartsProps) 
     strength: 'Strength',
   };
 
-  const areaLabels: Record<BodyArea, string> = {
+  const areaLabels: Record<WorkoutBodyArea, string> = {
     chest: 'Chest',
     back: 'Back',
     shoulders: 'Shoulders',

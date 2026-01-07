@@ -1,10 +1,11 @@
 import { Card } from '../Common';
+import type { ReactElement } from 'react';
 
 interface StatsCardProps {
   title: string;
   value: string | number;
   subtitle?: string;
-  icon?: JSX.Element;
+  icon?: ReactElement;
   trend?: {
     value: number;
     isPositive: boolean;

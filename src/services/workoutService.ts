@@ -1,4 +1,4 @@
-import type { Workout, Exercise, BodyArea, FitnessGoal, Difficulty } from '../types';
+import type { Workout, Exercise, BodyArea, FitnessGoal, Difficulty, WorkoutBodyArea } from '../types';
 import { mockDelay } from './api';
 
 /**
@@ -7,7 +7,7 @@ import { mockDelay } from './api';
 
 // Mock workout data generator
 const generateMockExercises = (bodyArea: BodyArea, count: number = 5): Exercise[] => {
-  const exercisesByArea: Record<BodyArea, string[]> = {
+  const exercisesByArea: Record<WorkoutBodyArea, string[]> = {
     chest: ['Push-ups', 'Bench Press', 'Chest Fly', 'Incline Press', 'Cable Crossover'],
     back: ['Pull-ups', 'Bent-over Rows', 'Lat Pulldown', 'Deadlift', 'Face Pulls'],
     shoulders: ['Overhead Press', 'Lateral Raises', 'Front Raises', 'Rear Delt Fly', 'Shrugs'],
@@ -48,7 +48,7 @@ const generateMockWorkout = (
     strength: 'Strength Building',
   };
 
-  const areaLabels: Record<BodyArea, string> = {
+  const areaLabels: Record<WorkoutBodyArea, string> = {
     chest: 'Chest',
     back: 'Back',
     shoulders: 'Shoulders',

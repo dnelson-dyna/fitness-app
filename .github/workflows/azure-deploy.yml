@@ -1,9 +1,10 @@
-name: Deploy to Azure
+name: Deploy to Azure (Disabled - Using Static Web Apps)
+
+# Disabled: Azure Static Web Apps handles both frontend and API deployment
+# The main workflow is: azure-static-web-apps-blue-rock-0765eaa0f.yml
 
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+  workflow_dispatch: # Manual trigger only
 
 env:
   NODE_VERSION: '18.x'
