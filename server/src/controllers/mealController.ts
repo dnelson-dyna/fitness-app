@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { mealService } from '../services/mealService.js';
+import { mealService } from '../services/mealService';
 import { z } from 'zod';
 
 const generateMealPlanSchema = z.object({

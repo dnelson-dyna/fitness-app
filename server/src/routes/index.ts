@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { workoutController } from '../controllers/workoutController.js';
-import { mealController} from '../controllers/mealController.js';
-import { authenticateUser } from '../middleware/auth.js';
+import { workoutController } from '../controllers/workoutController';
+import { mealController} from '../controllers/mealController';
+import { authenticateUser } from '../middleware/auth';
 
 const router = Router();
 

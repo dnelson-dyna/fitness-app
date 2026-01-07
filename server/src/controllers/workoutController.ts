@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { workoutService } from '../services/workoutService.js';
+import { workoutService } from '../services/workoutService';
 import { z } from 'zod';
 
 const generateWorkoutSchema = z.object({

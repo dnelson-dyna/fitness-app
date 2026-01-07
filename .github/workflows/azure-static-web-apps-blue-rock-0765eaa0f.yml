@@ -25,8 +25,11 @@ jobs:
         with:
           node-version: '20'
       
-      - name: Fix git config permissions
-        run: sudo chown -R $USER:$USER .git || true
+      - name: Fix workspace permissions
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+          sudo chown -R $USER:$USER .git || true
+          sudo chmod -R u+w $GITHUB_WORKSPACE || true
       
       - name: Build And Deploy
         id: builddeploy

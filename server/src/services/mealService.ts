@@ -1,6 +1,6 @@
-import { cosmosDB } from '../config/cosmosdb.js';
-import { openAI } from '../config/openai.js';
-import type { MealPlan, FitnessGoal, DietaryPreference } from '../models/types.js';
+import { cosmosDB } from '../config/cosmosdb';
+import { openAI } from '../config/openai';
+import type { MealPlan, FitnessGoal, DietaryPreference } from '../models/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export class MealService {

@@ -1,5 +1,5 @@
 import { AzureOpenAI } from 'openai';
-import { env } from './env.js';
+import { env } from './env';
 
 class OpenAIClient {
   private client: AzureOpenAI;

@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import { env } from './config/env.js';
-import { cosmosDB } from './config/cosmosdb.js';
-import router from './routes/index.js';
-import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { env } from './config/env';
+import { cosmosDB } from './config/cosmosdb';
+import router from './routes/index';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 const app = express();
 

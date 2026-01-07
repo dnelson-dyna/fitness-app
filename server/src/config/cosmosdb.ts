@@ -1,5 +1,5 @@
 import { CosmosClient, Database, Container } from '@azure/cosmos';
-import { env } from './env.js';
+import { env } from './env';
 
 class CosmosDBClient {
   private client: CosmosClient;
