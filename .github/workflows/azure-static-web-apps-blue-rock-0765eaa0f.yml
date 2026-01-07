@@ -32,6 +32,11 @@ jobs:
           sudo chmod -R u+w $GITHUB_WORKSPACE || true
           sudo chmod -R u+w .git || true
       
+      - name: Reset .git permissions before deploy
+        run: |
+          sudo chown -R $(id -u):$(id -g) .git || true
+          sudo chmod -R u+w .git || true
+      
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
