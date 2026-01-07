@@ -7,12 +7,6 @@ interface MealSelectorProps {
   isLoading: boolean;
 }
 
-const bodyAreas: BodyAreaOption[] = [
-  { id: 'fullbody', label: 'General', description: 'Balanced nutrition' },
-  { id: 'muscle', label: 'Muscle Focus', description: 'High protein' },
-  { id: 'cardio', label: 'Cardio Focus', description: 'Energy boost' },
-];
-
 const fitnessGoals: FitnessGoalOption[] = [
   { id: 'toning', label: 'Toning', description: 'Lean muscle' },
   { id: 'muscle', label: 'Muscle Building', description: 'Gain mass' },
