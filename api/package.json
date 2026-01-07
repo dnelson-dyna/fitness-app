@@ -10,9 +10,9 @@
   "dependencies": {
     "@azure/cosmos": "^4.2.1",
     "@azure/identity": "^4.5.0",
-    "@azure/openai": "^2.0.0",
     "openai": "^4.77.3",
-    "@azure/functions": "^4.0.0"
+    "@azure/functions": "^4.0.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.5",

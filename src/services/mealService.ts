@@ -27,12 +27,19 @@ const generateMockIngredients = (
   proteinPref?: ProteinPreference
 ): Ingredient[] => {
   // Determine protein source based on preferences and dietary restrictions
-  let proteinKey: ProteinPreference = proteinPref || 'any';
+  let proteinKey: ProteinPreference;
   
-  // Override with dietary restrictions
-  if (dietary === 'vegetarian') {
+  if (proteinPref && proteinPref !== 'any') {
+    // Use the specified preference
+    proteinKey = proteinPref;
+  } else if (dietary === 'vegetarian') {
+    // Pick a random vegetarian protein
     const vegProteins: ProteinPreference[] = ['tofu', 'tempeh', 'legumes', 'eggs'];
-    proteinKey = proteinPref && vegProteins.includes(proteinPref) ? proteinPref : 'tofu';
+    proteinKey = vegProteins[Math.floor(Math.random() * vegProteins.length)];
+  } else {
+    // Pick a random protein for variety
+    const meatProteins: ProteinPreference[] = ['chicken', 'turkey', 'beef', 'salmon', 'tuna', 'fish'];
+    proteinKey = meatProteins[Math.floor(Math.random() * meatProteins.length)];
   }
   
   const protein = proteinSources[proteinKey] || proteinSources.chicken;
