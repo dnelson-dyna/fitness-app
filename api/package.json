@@ -2,7 +2,7 @@
   "name": "fitness-app-api",
   "version": "1.0.0",
   "description": "FitFlow Azure Functions API",
-  "main": "dist/health.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
