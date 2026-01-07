@@ -5,7 +5,9 @@ import { Card, Button } from '../Common';
 interface MealCardProps {
   meal: Meal;
   onChangeProtein?: (mealType: MealType, newProtein: ProteinPreference) => void;
+  onRegenerateMeal?: (mealType: MealType) => void;
   dietaryPreference?: string;
+  isLoading?: boolean;
 }
 
 const proteinOptions: { id: ProteinPreference; label: string }[] = [
@@ -22,7 +24,7 @@ const proteinOptions: { id: ProteinPreference; label: string }[] = [
   { id: 'legumes', label: 'Beans/Lentils' },
 ];
 
-export default function MealCard({ meal, onChangeProtein, dietaryPreference }: MealCardProps) {
+export default function MealCard({ meal, onChangeProtein, onRegenerateMeal, dietaryPreference, isLoading }: MealCardProps) {
   const [showDetails, setShowDetails] = useState(false);
   const [showProteinOptions, setShowProteinOptions] = useState(false);
 
@@ -30,6 +32,12 @@ export default function MealCard({ meal, onChangeProtein, dietaryPreference }: M
     if (onChangeProtein) {
       onChangeProtein(meal.type, newProtein);
       setShowProteinOptions(false);
+    }
+  };
+
+  const handleRegenerateMeal = () => {
+    if (onRegenerateMeal) {
+      onRegenerateMeal(meal.type);
     }
   };
 
@@ -88,6 +96,56 @@ export default function MealCard({ meal, onChangeProtein, dietaryPreference }: M
             <p className="font-semibold text-gray-900">{meal.macros.fats}g</p>
           </div>
         </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-2">
+          {/* Regenerate Meal Button */}
+          {onRegenerateMeal && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRegenerateMeal}
+              disabled={isLoading}
+              isLoading={isLoading}
+              fullWidth
+            >
+              {isLoading ? 'Generating...' : 'Generate New Meal'}
+            </Button>
+          )}
+
+          {/* Change Protein Button */}
+          {meal.protein && onChangeProtein && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowProteinOptions(!showProteinOptions)}
+              disabled={isLoading}
+              fullWidth
+            >
+              {showProteinOptions ? 'Cancel' : 'Change Protein'}
+            </Button>
+          )}
+        </div>
+
+        {/* Change Protein Options */}
+        {showProteinOptions && meal.protein && onChangeProtein && (
+          <div className="grid grid-cols-2 gap-2">
+            {availableProteins.map((protein) => (
+              <button
+                key={protein.id}
+                onClick={() => handleProteinChange(protein.id)}
+                disabled={meal.protein === protein.id || isLoading}
+                className={`p-2 rounded-lg border text-sm transition-all ${
+                  meal.protein === protein.id
+                    ? 'border-primary-500 bg-primary-50 text-primary-700 font-medium'
+                    : 'border-gray-200 hover:border-primary-300 text-gray-700 disabled:opacity-50'
+                }`}
+              >
+                {protein.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Change Protein Button */}
         {meal.protein && onChangeProtein && (

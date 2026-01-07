@@ -7,9 +7,11 @@ interface MealPlanProps {
   onSave: () => void;
   onBack: () => void;
   onChangeProtein?: (mealType: MealType, newProtein: ProteinPreference) => void;
+  onRegenerateMeal?: (mealType: MealType) => void;
+  isLoading?: boolean;
 }
 
-export default function MealPlan({ mealPlan, onSave, onBack, onChangeProtein }: MealPlanProps) {
+export default function MealPlan({ mealPlan, onSave, onBack, onChangeProtein, onRegenerateMeal, isLoading }: MealPlanProps) {
   return (
     <div className="space-y-6">
       {/* Back Button */}
@@ -72,7 +74,9 @@ export default function MealPlan({ mealPlan, onSave, onBack, onChangeProtein }: 
             key={meal.id} 
             meal={meal} 
             onChangeProtein={onChangeProtein}
+            onRegenerateMeal={onRegenerateMeal}
             dietaryPreference={mealPlan.dietaryPreference}
+            isLoading={isLoading}
           />
         ))}
       </div>

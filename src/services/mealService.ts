@@ -225,6 +225,40 @@ export const mealService = {
   },
 
   /**
+   * Generate a completely new meal for a specific meal type
+   */
+  regenerateMeal: async (
+    mealPlan: MealPlan,
+    mealType: MealType
+  ): Promise<Meal> => {
+    try {
+      const response = await fetch('http://localhost:3000/api/meals/regenerate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          mealPlanId: mealPlan.id,
+          mealType,
+          fitnessGoal: mealPlan.fitnessGoal,
+          dietaryPreference: mealPlan.dietaryPreference 
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to regenerate meal');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error regenerating meal:', error);
+      // Fallback to mock data - generate with random protein
+      await mockDelay(500);
+      return generateMockMeal(mealType, mealPlan.dietaryPreference);
+    }
+  },
+
+  /**
    * Get saved meal plans
    */
   getMealPlans: async (): Promise<MealPlan[]> => {

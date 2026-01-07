@@ -3,7 +3,7 @@ import { MealSelector, MealPlan } from '../components/MealPlans';
 import { Loading } from '../components/Common';
 
 export default function MealPlansPage() {
-  const { currentMealPlan, isLoading, generateMealPlan, changeMealProtein, saveMealPlan, clearCurrentMealPlan } = useMealPlans();
+  const { currentMealPlan, isLoading, generateMealPlan, changeMealProtein, regenerateMeal, saveMealPlan, clearCurrentMealPlan } = useMealPlans();
 
   const handleSave = async () => {
     if (currentMealPlan) {
@@ -33,6 +33,8 @@ export default function MealPlansPage() {
           onSave={handleSave}
           onBack={clearCurrentMealPlan}
           onChangeProtein={changeMealProtein}
+          onRegenerateMeal={regenerateMeal}
+          isLoading={isLoading}
         />
       ) : (
         <MealSelector onGenerate={generateMealPlan} isLoading={isLoading} />

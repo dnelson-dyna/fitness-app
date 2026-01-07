@@ -14,6 +14,7 @@ interface UseMealPlansReturn {
     proteinPrefs?: ProteinPreference[]
   ) => Promise<void>;
   changeMealProtein: (mealType: MealType, newProtein: ProteinPreference) => Promise<void>;
+  regenerateMeal: (mealType: MealType) => Promise<void>;
   saveMealPlan: (mealPlan: MealPlan) => Promise<void>;
   clearCurrentMealPlan: () => void;
 }
@@ -80,6 +81,40 @@ export function useMealPlans(): UseMealPlansReturn {
     }
   }, [currentMealPlan]);
 
+  const regenerateMeal = useCallback(async (mealType: MealType) => {
+    if (!currentMealPlan) return;
+    
+    setIsLoading(true);
+    setError(null);
+    try {
+      const newMeal = await mealService.regenerateMeal(currentMealPlan, mealType);
+      
+      // Update the meal in the current plan
+      setCurrentMealPlan(prev => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          meals: prev.meals.map(m => m.type === mealType ? newMeal : m),
+          // Recalculate totals
+          totalCalories: prev.meals.reduce((sum, m) => 
+            sum + (m.type === mealType ? newMeal.calories : m.calories), 0),
+          macros: prev.meals.reduce((acc, m) => {
+            const meal = m.type === mealType ? newMeal : m;
+            return {
+              protein: acc.protein + meal.macros.protein,
+              carbs: acc.carbs + meal.macros.carbs,
+              fats: acc.fats + meal.macros.fats,
+            };
+          }, { protein: 0, carbs: 0, fats: 0 })
+        };
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to regenerate meal');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentMealPlan]);
+
   const saveMealPlan = useCallback(async (mealPlan: MealPlan) => {
     setIsLoading(true);
     setError(null);
@@ -104,6 +139,7 @@ export function useMealPlans(): UseMealPlansReturn {
     error,
     generateMealPlan,
     changeMealProtein,
+    regenerateMeal,
     saveMealPlan,
     clearCurrentMealPlan,
   };
