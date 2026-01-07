@@ -26,7 +26,6 @@ const generateMockIngredients = (
   dietary: DietaryPreference,
   proteinPref?: ProteinPreference
 ): Ingredient[] => {
-): Ingredient[] => {
   // Determine protein source based on preferences and dietary restrictions
   let proteinKey: ProteinPreference = proteinPref || 'any';
   

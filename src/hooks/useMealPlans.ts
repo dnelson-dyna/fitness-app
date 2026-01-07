@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { MealPlan, Meal, BodyArea, FitnessGoal, DietaryPreference, ProteinPreference, MealType } from '../types';
+import type { MealPlan, BodyArea, FitnessGoal, DietaryPreference, ProteinPreference, MealType } from '../types';
 import { mealService } from '../services';
 
 interface UseMealPlansReturn {

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import type { Meal, ProteinPreference } from '../../types';
+import type { Meal, ProteinPreference, MealType } from '../../types';
 import { Card, Button } from '../Common';
 
 interface MealCardProps {
   meal: Meal;
-  onChangeProtein?: (mealType: string, newProtein: ProteinPreference) => void;
+  onChangeProtein?: (mealType: MealType, newProtein: ProteinPreference) => void;
   dietaryPreference?: string;
 }
 
