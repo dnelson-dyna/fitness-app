@@ -1,13 +1,45 @@
 import { useState } from 'react';
-import type { Meal } from '../../types';
-import { Card } from '../Common';
+import type { Meal, ProteinPreference } from '../../types';
+import { Card, Button } from '../Common';
 
 interface MealCardProps {
   meal: Meal;
+  onChangeProtein?: (mealType: string, newProtein: ProteinPreference) => void;
+  dietaryPreference?: string;
 }
 
-export default function MealCard({ meal }: MealCardProps) {
+const proteinOptions: { id: ProteinPreference; label: string }[] = [
+  { id: 'chicken', label: 'Chicken' },
+  { id: 'turkey', label: 'Turkey' },
+  { id: 'beef', label: 'Beef' },
+  { id: 'pork', label: 'Pork' },
+  { id: 'salmon', label: 'Salmon' },
+  { id: 'tuna', label: 'Tuna' },
+  { id: 'fish', label: 'White Fish' },
+  { id: 'eggs', label: 'Eggs' },
+  { id: 'tofu', label: 'Tofu' },
+  { id: 'tempeh', label: 'Tempeh' },
+  { id: 'legumes', label: 'Beans/Lentils' },
+];
+
+export default function MealCard({ meal, onChangeProtein, dietaryPreference }: MealCardProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const [showProteinOptions, setShowProteinOptions] = useState(false);
+
+  const handleProteinChange = (newProtein: ProteinPreference) => {
+    if (onChangeProtein) {
+      onChangeProtein(meal.type, newProtein);
+      setShowProteinOptions(false);
+    }
+  };
+
+  // Filter proteins based on dietary preference
+  const availableProteins = proteinOptions.filter(protein => {
+    if (dietaryPreference === 'vegetarian') {
+      return ['eggs', 'tofu', 'tempeh', 'legumes'].includes(protein.id);
+    }
+    return true;
+  });
 
   const mealTypeColors: Record<string, string> = {
     breakfast: 'bg-yellow-100 text-yellow-800',
@@ -26,6 +58,11 @@ export default function MealCard({ meal }: MealCardProps) {
               {meal.type.toUpperCase()}
             </span>
             <h3 className="font-semibold text-gray-900 mt-2">{meal.name}</h3>
+            {meal.protein && (
+              <p className="text-sm text-gray-600 mt-1">
+                Protein: <span className="font-medium">{meal.protein}</span>
+              </p>
+            )}
             {meal.prepTime && (
               <p className="text-sm text-gray-600 mt-1">Prep time: {meal.prepTime} min</p>
             )}
@@ -51,6 +88,39 @@ export default function MealCard({ meal }: MealCardProps) {
             <p className="font-semibold text-gray-900">{meal.macros.fats}g</p>
           </div>
         </div>
+
+        {/* Change Protein Button */}
+        {meal.protein && onChangeProtein && (
+          <div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowProteinOptions(!showProteinOptions)}
+              fullWidth
+            >
+              {showProteinOptions ? 'Cancel' : 'Change Protein'}
+            </Button>
+            
+            {showProteinOptions && (
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {availableProteins.map((protein) => (
+                  <button
+                    key={protein.id}
+                    onClick={() => handleProteinChange(protein.id)}
+                    className={`p-2 rounded-lg border text-sm transition-all ${
+                      meal.protein === protein.id
+                        ? 'border-primary-500 bg-primary-50 text-primary-700 font-medium'
+                        : 'border-gray-200 hover:border-primary-300 text-gray-700'
+                    }`}
+                    disabled={meal.protein === protein.id}
+                  >
+                    {protein.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Toggle Details */}
         <button

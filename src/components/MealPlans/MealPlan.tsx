@@ -1,4 +1,4 @@
-import type { MealPlan as MealPlanType } from '../../types';
+import type { MealPlan as MealPlanType, ProteinPreference, MealType } from '../../types';
 import { Button, Card } from '../Common';
 import MealCard from './MealCard';
 
@@ -6,9 +6,10 @@ interface MealPlanProps {
   mealPlan: MealPlanType;
   onSave: () => void;
   onBack: () => void;
+  onChangeProtein?: (mealType: MealType, newProtein: ProteinPreference) => void;
 }
 
-export default function MealPlan({ mealPlan, onSave, onBack }: MealPlanProps) {
+export default function MealPlan({ mealPlan, onSave, onBack, onChangeProtein }: MealPlanProps) {
   return (
     <div className="space-y-6">
       {/* Back Button */}
@@ -67,7 +68,12 @@ export default function MealPlan({ mealPlan, onSave, onBack }: MealPlanProps) {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-gray-900">Your Meals for Today</h2>
         {mealPlan.meals.map((meal) => (
-          <MealCard key={meal.id} meal={meal} />
+          <MealCard 
+            key={meal.id} 
+            meal={meal} 
+            onChangeProtein={onChangeProtein}
+            dietaryPreference={mealPlan.dietaryPreference}
+          />
         ))}
       </div>
 

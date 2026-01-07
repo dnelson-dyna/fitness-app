@@ -1,4 +1,4 @@
-import type { BodyArea, DietaryPreference, FitnessGoal, MealType } from './fitness';
+import type { BodyArea, DietaryPreference, FitnessGoal, MealType, ProteinPreference } from './fitness';
 
 /**
  * Meal and nutrition-related type definitions
@@ -21,6 +21,7 @@ export interface Meal {
   id: string;
   name: string;
   type: MealType;
+  protein?: ProteinPreference; // Main protein source
   calories: number;
   macros: Macros;
   ingredients: Ingredient[];
@@ -35,6 +36,7 @@ export interface MealPlan {
   bodyArea: BodyArea;
   fitnessGoal: FitnessGoal;
   dietaryPreference: DietaryPreference;
+  proteinPreferences?: ProteinPreference[]; // Optional protein preferences
   meals: Meal[];
   totalCalories: number;
   macros: Macros;
