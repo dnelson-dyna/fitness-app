@@ -27,9 +27,10 @@ jobs:
       
       - name: Fix workspace permissions
         run: |
-          sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
-          sudo chown -R $USER:$USER .git || true
+          sudo chown -R $(id -u):$(id -g) $GITHUB_WORKSPACE || true
+          sudo chown -R $(id -u):$(id -g) .git || true
           sudo chmod -R u+w $GITHUB_WORKSPACE || true
+          sudo chmod -R u+w .git || true
       
       - name: Build And Deploy
         id: builddeploy
