@@ -1,5 +1,5 @@
 import type { MealPlan, Meal, Ingredient, Macros, BodyArea, FitnessGoal, DietaryPreference, MealType, ProteinPreference } from '../types';
-import { mockDelay } from './api';
+import { mockDelay, API_BASE_URL } from './api';
 
 /**
  * Meal planning service with mock data
@@ -175,7 +175,7 @@ export const mealService = {
     proteinPrefs?: ProteinPreference[]
   ): Promise<MealPlan> => {
     try {
-      const response = await fetch('http://localhost:3000/api/meals/generate', {
+      const response = await fetch(`${API_BASE_URL}/meals/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -204,31 +204,10 @@ export const mealService = {
     mealType: MealType,
     newProtein: ProteinPreference
   ): Promise<Meal> => {
-    try {
-      const response = await fetch('http://localhost:3000/api/meals/regenerate-meal', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          mealPlanId: mealPlan.id,
-          mealType, 
-          protein: newProtein,
-          dietaryPreference: mealPlan.dietaryPreference 
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to regenerate meal');
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('Error regenerating meal:', error);
-      // Fallback to mock data
-      await mockDelay(500);
-      return generateMockMeal(mealType, mealPlan.dietaryPreference, newProtein);
-    }
+    // For now, just use mock data since we don't have a specific regenerate endpoint
+    // The backend /generate creates a full meal plan, not individual meals
+    await mockDelay(500);
+    return generateMockMeal(mealType, mealPlan.dietaryPreference, newProtein);
   },
 
   /**
@@ -238,31 +217,10 @@ export const mealService = {
     mealPlan: MealPlan,
     mealType: MealType
   ): Promise<Meal> => {
-    try {
-      const response = await fetch('http://localhost:3000/api/meals/regenerate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          mealPlanId: mealPlan.id,
-          mealType,
-          fitnessGoal: mealPlan.fitnessGoal,
-          dietaryPreference: mealPlan.dietaryPreference 
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to regenerate meal');
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('Error regenerating meal:', error);
-      // Fallback to mock data - generate with random protein
-      await mockDelay(500);
-      return generateMockMeal(mealType, mealPlan.dietaryPreference);
-    }
+    // For now, just use mock data since we don't have a specific regenerate endpoint
+    // The backend /generate creates a full meal plan, not individual meals
+    await mockDelay(500);
+    return generateMockMeal(mealType, mealPlan.dietaryPreference);
   },
 
   /**
@@ -270,7 +228,7 @@ export const mealService = {
    */
   getMealPlans: async (): Promise<MealPlan[]> => {
     try {
-      const response = await fetch('http://localhost:3000/api/meals');
+      const response = await fetch(`${API_BASE_URL}/meals`);
       if (!response.ok) throw new Error('Failed to fetch meal plans');
       return await response.json();
     } catch (error) {
@@ -284,7 +242,7 @@ export const mealService = {
    */
   saveMealPlan: async (mealPlan: MealPlan): Promise<MealPlan> => {
     try {
-      const response = await fetch('http://localhost:3000/api/meals', {
+      const response = await fetch(`${API_BASE_URL}/meals`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 import type { Workout, Exercise, BodyArea, FitnessGoal, Difficulty, WorkoutBodyArea } from '../types';
-import { mockDelay } from './api';
+import { mockDelay, API_BASE_URL } from './api';
 
 /**
  * Workout service with mock data
@@ -93,7 +93,7 @@ export const workoutService = {
     difficulty: Difficulty = 'beginner'
   ): Promise<Workout> => {
     try {
-      const response = await fetch('http://localhost:3000/api/workouts/generate', {
+      const response = await fetch(`${API_BASE_URL}/workouts/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export const workoutService = {
    */
   getWorkouts: async (): Promise<Workout[]> => {
     try {
-      const response = await fetch('http://localhost:3000/api/workouts');
+      const response = await fetch(`${API_BASE_URL}/workouts`);
       if (!response.ok) throw new Error('Failed to fetch workouts');
       return await response.json();
     } catch (error) {
@@ -133,7 +133,7 @@ export const workoutService = {
    */
   saveWorkout: async (workout: Workout): Promise<Workout> => {
     try {
-      const response = await fetch('http://localhost:3000/api/workouts', {
+      const response = await fetch(`${API_BASE_URL}/workouts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ export const workoutService = {
    */
   completeWorkout: async (workoutId: string): Promise<Workout> => {
     try {
-      const response = await fetch(`http://localhost:3000/api/workouts/${workoutId}/complete`, {
+      const response = await fetch(`${API_BASE_URL}/workouts/${workoutId}/complete`, {
         method: 'POST',
       });
       if (!response.ok) throw new Error('Failed to complete workout');
@@ -179,7 +179,7 @@ export const workoutService = {
     completed: boolean
   ): Promise<void> => {
     try {
-      await fetch(`http://localhost:3000/api/workouts/${workoutId}`, {
+      await fetch(`${API_BASE_URL}/workouts/${workoutId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
