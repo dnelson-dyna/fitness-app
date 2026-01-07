@@ -6,7 +6,7 @@ import { mockDelay } from './api';
  */
 
 // Mock workout data generator
-const generateMockExercises = (bodyArea: BodyArea, count: number = 5): Exercise[] => {
+const generateMockExercises = (bodyArea: WorkoutBodyArea, count: number = 5): Exercise[] => {
   const exercisesByArea: Record<WorkoutBodyArea, string[]> = {
     chest: ['Push-ups', 'Bench Press', 'Chest Fly', 'Incline Press', 'Cable Crossover'],
     back: ['Pull-ups', 'Bent-over Rows', 'Lat Pulldown', 'Deadlift', 'Face Pulls'],
@@ -36,7 +36,7 @@ const generateMockExercises = (bodyArea: BodyArea, count: number = 5): Exercise[
 };
 
 const generateMockWorkout = (
-  bodyArea: BodyArea,
+  bodyArea: WorkoutBodyArea,
   fitnessGoal: FitnessGoal,
   difficulty: Difficulty = 'beginner'
 ): Workout => {
@@ -110,7 +110,7 @@ export const workoutService = {
       console.error('Error generating workout:', error);
       // Fallback to mock data if API fails
       await mockDelay(800);
-      return generateMockWorkout(bodyArea, fitnessGoal, difficulty);
+      return generateMockWorkout(bodyArea as WorkoutBodyArea, fitnessGoal, difficulty);
     }
   },
 
