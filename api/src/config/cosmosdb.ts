@@ -21,7 +21,7 @@ class CosmosDBClient {
   async init() {
     if (!this.database) {
       const { database } = await this.client.databases.createIfNotExists({
-        id: 'FitnessDB',
+        id: env.COSMOS_DATABASE_NAME,
       });
       this.database = database;
 
