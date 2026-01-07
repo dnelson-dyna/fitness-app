@@ -25,6 +25,12 @@ jobs:
         with:
           node-version: '20'
       
+      - name: Build API
+        run: |
+          cd api
+          npm ci
+          npm run build
+      
       - name: Fix workspace permissions
         run: |
           sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
