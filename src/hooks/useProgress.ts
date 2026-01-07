@@ -73,7 +73,7 @@ export function useProgress(): UseProgressReturn {
         },
         workoutsByArea: {
           ...prev.workoutsByArea,
-          [completedWorkout.bodyArea]: prev.workoutsByArea[completedWorkout.bodyArea] + 1,
+          [completedWorkout.bodyArea]: (prev.workoutsByArea[completedWorkout.bodyArea] || 0) + 1,
         },
         recentWorkouts: [completedWorkout, ...prev.recentWorkouts].slice(0, 10),
       };

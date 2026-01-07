@@ -17,9 +17,9 @@ const generateMockExercises = (bodyArea: BodyArea, count: number = 5): Exercise[
     fullbody: ['Burpees', 'Jumping Jacks', 'High Knees', 'Jump Squats', 'Push-ups'],
   };
 
-  const exercises = exercisesByArea[bodyArea] || exercisesByArea.fullbody;
+  const exercises = exercisesByArea[bodyArea as WorkoutBodyArea] || exercisesByArea.fullbody;
 
-  return exercises.slice(0, count).map((name, index) => ({
+  return exercises.slice(0, count).map((name: string, index: number) => ({
     id: `exercise-${bodyArea}-${index}`,
     name,
     sets: 3,

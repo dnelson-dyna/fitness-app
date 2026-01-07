@@ -71,7 +71,7 @@ export default function Charts({ workoutsByGoal, workoutsByArea }: ChartsProps) 
         {totalAreaWorkouts > 0 ? (
           <div className="space-y-3">
             {Object.entries(workoutsByArea).map(([area, count]) =>
-              renderBar(areaLabels[area as BodyArea], count, totalAreaWorkouts, 'bg-secondary-500')
+              renderBar(areaLabels[area as WorkoutBodyArea], count || 0, totalAreaWorkouts, 'bg-secondary-500')
             )}
           </div>
         ) : (

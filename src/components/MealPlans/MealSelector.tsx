@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { BodyArea, FitnessGoal, DietaryPreference, BodyAreaOption, FitnessGoalOption, DietaryPreferenceOption } from '../../types';
+import type { BodyArea, FitnessGoal, DietaryPreference, FitnessGoalOption, DietaryPreferenceOption } from '../../types';
 import { Button, Card } from '../Common';
 
 interface MealSelectorProps {
