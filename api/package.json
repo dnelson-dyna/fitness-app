@@ -2,8 +2,10 @@
   "name": "fitness-app-api",
   "version": "1.0.0",
   "description": "FitFlow Azure Functions API",
+  "main": "dist/health.js",
   "scripts": {
     "build": "tsc",
+    "watch": "tsc --watch",
     "start": "func start",
     "prestart": "npm run build"
   },
