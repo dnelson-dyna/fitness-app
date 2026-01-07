@@ -11,19 +11,23 @@ export const mockDelay = (ms: number = 500): Promise<void> => {
 const getApiBaseUrl = () => {
   // If explicitly set in environment, use that
   if (import.meta.env.VITE_API_BASE_URL) {
+    console.log('Using VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
     return import.meta.env.VITE_API_BASE_URL;
   }
   
   // In production (Azure Static Web Apps), use relative path to Azure Functions
   if (import.meta.env.PROD) {
+    console.log('Production mode: using /api');
     return '/api';
   }
   
   // In development, use local Express server
+  console.log('Development mode: using localhost:3000');
   return 'http://localhost:3000/api';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
+console.log('API_BASE_URL set to:', API_BASE_URL);
 
 export const apiClient = {
   get: async <T>(endpoint: string): Promise<T> => {

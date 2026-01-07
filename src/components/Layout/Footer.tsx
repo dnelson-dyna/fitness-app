@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const buildNumber = import.meta.env.VITE_BUILD_NUMBER || new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const isProduction = import.meta.env.PROD;
 
   return (
     <footer className="bg-white border-t border-gray-200 mt-auto mb-16 md:mb-0">
@@ -10,6 +12,9 @@ export default function Footer() {
           <div className="text-center md:text-left">
             <p className="text-gray-600 text-sm">
               &copy; {currentYear} FitFlow. Empowering your fitness journey.
+            </p>
+            <p className="text-gray-400 text-xs mt-1">
+              Build {buildNumber} {isProduction ? '(Production)' : '(Development)'}
             </p>
           </div>
           <div className="flex gap-6">
