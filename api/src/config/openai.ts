@@ -2,14 +2,17 @@ import { AzureOpenAI } from 'openai';
 import { env } from './env';
 
 class OpenAIClient {
-  private client: AzureOpenAI;
+  private client: AzureOpenAI | null = null;
 
-  constructor() {
-    this.client = new AzureOpenAI({
-      endpoint: env.AZURE_OPENAI_ENDPOINT,
-      apiKey: env.AZURE_OPENAI_KEY,
-      apiVersion: '2024-08-01-preview',
-    });
+  private getClient(): AzureOpenAI {
+    if (!this.client) {
+      this.client = new AzureOpenAI({
+        endpoint: env.AZURE_OPENAI_ENDPOINT,
+        apiKey: env.AZURE_OPENAI_KEY,
+        apiVersion: '2024-08-01-preview',
+      });
+    }
+    return this.client;
   }
 
   async generateChatCompletion(
@@ -21,7 +24,7 @@ class OpenAIClient {
     }
   ): Promise<string> {
     try {
-      const response = await this.client.chat.completions.create({
+      const response = await this.getClient().chat.completions.create({
         model: env.AZURE_OPENAI_DEPLOYMENT,
         messages,
         temperature: options?.temperature ?? 0.7,

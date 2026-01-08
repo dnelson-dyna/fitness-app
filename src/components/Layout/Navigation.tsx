@@ -1,14 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import type { ReactElement } from 'react';
+import { useAuth0Context } from '../../hooks/useAuth0Context';
 
 interface NavItem {
   path: string;
   label: string;
   icon: ReactElement;
+  requiresAuth?: boolean;
 }
 
 export default function Navigation() {
   const location = useLocation();
+  const { isAuthenticated } = useAuth0Context();
 
   const navItems: NavItem[] = [
     {
@@ -67,12 +70,38 @@ export default function Navigation() {
         </svg>
       ),
     },
+    {
+      path: '/settings',
+      label: 'Settings',
+      requiresAuth: true,
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+        </svg>
+      ),
+    },
   ];
+
+  // Filter nav items - only show Settings if authenticated
+  const visibleNavItems = navItems.filter(item => 
+    !item.requiresAuth || (item.requiresAuth && isAuthenticated)
+  );
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 md:hidden z-50">
       <div className="flex justify-around items-center h-16">
-        {navItems.map((item) => {
+        {visibleNavItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link

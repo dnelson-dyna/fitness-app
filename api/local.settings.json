@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "COSMOSDB_ENDPOINT": "https://fitflow-cosmos.documents.azure.com:443/",
+    "COSMOSDB_KEY": "placeholder-key",
+    "COSMOSDB_DATABASE_NAME": "fitness-app",
+    "OPENAI_API_KEY": "sk-test-placeholder-key-1234567890abcdefghijklmnopqrstuvwxyz1234567890"
+  },
+  "Host": {
+    "CORS": "*",
+    "CORSCredentials": false
+  }
+}

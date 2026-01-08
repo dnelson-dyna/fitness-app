@@ -2,7 +2,7 @@ import { CosmosClient, Database, Container } from '@azure/cosmos';
 import { env } from './env';
 
 class CosmosDBClient {
-  private client: CosmosClient;
+  private client: CosmosClient | null = null;
   private database: Database | null = null;
   private containers: {
     workouts?: Container;
@@ -11,16 +11,19 @@ class CosmosDBClient {
     progress?: Container;
   } = {};
 
-  constructor() {
-    this.client = new CosmosClient({
-      endpoint: env.AZURE_COSMOS_ENDPOINT,
-      key: env.AZURE_COSMOS_KEY,
-    });
+  private getClient(): CosmosClient {
+    if (!this.client) {
+      this.client = new CosmosClient({
+        endpoint: env.AZURE_COSMOS_ENDPOINT,
+        key: env.AZURE_COSMOS_KEY,
+      });
+    }
+    return this.client;
   }
 
   async init() {
     if (!this.database) {
-      const { database } = await this.client.databases.createIfNotExists({
+      const { database } = await this.getClient().databases.createIfNotExists({
         id: env.COSMOS_DATABASE_NAME,
       });
       this.database = database;

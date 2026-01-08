@@ -1,21 +1,37 @@
-import type { BodyArea, DietaryPreference, FitnessGoal } from './fitness';
+import type { DietaryPreference, FitnessGoal } from './fitness';
 
 /**
  * User-related type definitions
  */
 
 export interface UserProfile {
-  id: string;
+  id: string; // Auth0 user ID (sub)
   email: string;
-  name: string;
+  name?: string;
+  picture?: string;
+  
+  // Personal metrics
   age?: number;
-  weight?: number; // in lbs or kg
-  height?: number; // in inches or cm
-  fitnessGoals: FitnessGoal[];
-  preferredBodyAreas: BodyArea[];
-  dietaryPreference: DietaryPreference;
+  height?: number; // in cm
+  weight?: number; // current weight in kg
+  targetWeight?: number; // goal weight in kg
+  
+  // Preferences (used for meal/workout generation)
+  fitnessGoal?: FitnessGoal;
+  dietaryPreference?: DietaryPreference;
+  preferredProteins?: string[]; // e.g., ['chicken', 'beef', 'tofu']
+  
+  // Metadata
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface WeightCheckIn {
+  id: string;
+  userId: string;
+  weight: number; // kg
+  recordedAt: Date;
+  notes?: string;
 }
 
 export interface UserPreferences {

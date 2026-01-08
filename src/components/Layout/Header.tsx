@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth0Context } from '../../hooks/useAuth0Context';
+import { Button } from '../Common';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, isLoading, loginWithRedirect, logout, user } = useAuth0Context();
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-40">
@@ -36,6 +39,40 @@ export default function Header() {
             >
               Progress
             </Link>
+            
+            {/* Auth Section */}
+            {!isLoading && (
+              <>
+                {isAuthenticated ? (
+                  <div className="flex items-center space-x-4">
+                    {user?.picture && (
+                      <img 
+                        src={user.picture} 
+                        alt={user.name || 'User'} 
+                        className="w-8 h-8 rounded-full"
+                      />
+                    )}
+                    <span className="text-sm text-gray-700">{user?.name}</span>
+                    <Link
+                      to="/settings"
+                      className="text-gray-700 hover:text-primary-600 transition-colors font-medium"
+                    >
+                      Settings
+                    </Link>
+                    <Button
+                      variant="secondary"
+                      onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+                    >
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <Button onClick={() => loginWithRedirect()}>
+                    Sign In with Google
+                  </Button>
+                )}
+              </>
+            )}
           </nav>
 
           {/* Mobile menu button */}
@@ -94,6 +131,42 @@ export default function Header() {
               >
                 Progress
               </Link>
+              
+              {/* Mobile Auth Section */}
+              {!isLoading && (
+                <>
+                  {isAuthenticated ? (
+                    <>
+                      <Link
+                        to="/settings"
+                        className="text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Settings
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logout({ logoutParams: { returnTo: window.location.origin } });
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
+                      >
+                        Sign Out ({user?.name})
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        loginWithRedirect();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="text-left text-primary-600 hover:text-primary-700 transition-colors font-medium py-2"
+                    >
+                      Sign In with Google
+                    </button>
+                  )}
+                </>
+              )}
             </div>
           </nav>
         )}

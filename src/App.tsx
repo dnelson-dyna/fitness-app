@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header, Navigation, Footer } from './components/Layout';
-import { Home, WorkoutsPage, MealPlansPage, ProgressPage } from './pages';
+import { Home, WorkoutsPage, MealPlansPage, ProgressPage, SettingsPage, Callback } from './pages';
 
 function App() {
   return (
@@ -14,6 +14,8 @@ function App() {
             <Route path="/workouts" element={<WorkoutsPage />} />
             <Route path="/meals" element={<MealPlansPage />} />
             <Route path="/progress" element={<ProgressPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/callback" element={<Callback />} />
           </Routes>
         </main>
 
