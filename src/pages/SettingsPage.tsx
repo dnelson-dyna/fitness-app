@@ -262,10 +262,10 @@ export default function SettingsPage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Select a goal</option>
-                <option value="weight_loss">Weight Loss</option>
-                <option value="muscle_gain">Muscle Gain</option>
-                <option value="maintenance">Maintenance</option>
-                <option value="endurance">Endurance</option>
+                <option value="weightloss">Weight Loss</option>
+                <option value="muscle">Muscle Gain</option>
+                <option value="toning">Toning</option>
+                <option value="cardio">Cardio</option>
                 <option value="strength">Strength</option>
               </select>
             </div>
@@ -281,12 +281,12 @@ export default function SettingsPage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Select preference</option>
-                <option value="none">No Restrictions</option>
+                <option value="standard">Standard</option>
                 <option value="vegetarian">Vegetarian</option>
-                <option value="vegan">Vegan</option>
-                <option value="pescatarian">Pescatarian</option>
                 <option value="keto">Keto</option>
-                <option value="paleo">Paleo</option>
+                <option value="highprotein">High Protein</option>
+                <option value="glutenfree">Gluten Free</option>
+                <option value="dairyfree">Dairy Free</option>
               </select>
             </div>
           </div>

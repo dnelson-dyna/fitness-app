@@ -25,6 +25,8 @@ export const Auth0Provider: React.FC<Auth0ProviderProps> = ({ children }) => {
         redirect_uri: redirectUri,
         scope: 'openid profile email'
       }}
+      cacheLocation="localstorage"
+      useRefreshTokens={true}
     >
       {children}
     </Auth0ProviderOrig>

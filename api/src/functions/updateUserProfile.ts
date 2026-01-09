@@ -66,7 +66,7 @@ export async function updateUserProfile(request: HttpRequest, context: Invocatio
       jsonBody: updatedProfile
     };
   } catch (error: any) {
-    context.error('❌ Error updating profile:', error);
+    context.error('❌ Error updating profile:', error.message || String(error));
 
     if (error instanceof z.ZodError) {
       return {
