@@ -36,7 +36,17 @@ export async function generateMealOptions(request: HttpRequest, context: Invocat
       );
 
       // Parse response
-      meals = JSON.parse(response);
+      const parsedResponse = JSON.parse(response);
+      
+      // Handle both array and object responses
+      if (Array.isArray(parsedResponse)) {
+        meals = parsedResponse;
+      } else if (parsedResponse.meals && Array.isArray(parsedResponse.meals)) {
+        meals = parsedResponse.meals;
+      } else {
+        throw new Error('AI response format invalid - expected array or object with meals array');
+      }
+      
       context.log('✅ Generated meals using AI');
     } catch (aiError) {
       context.log('⚠️ AI generation failed, using mock data:', aiError instanceof Error ? aiError.message : 'Unknown error');
@@ -119,7 +129,7 @@ function getMealOptionsPrompt(params: {
   const targets = mealCalorieTargets[params.mealType];
 
   return {
-    system: `You are a certified nutritionist creating personalized meal plans. Generate balanced, nutritious meals in JSON format. Each meal should include detailed step-by-step cooking instructions and ingredient substitution suggestions. Meals should vary in calorie content (low, medium, high) to give users options.`,
+    system: `You are a certified nutritionist creating personalized meal plans. Generate balanced, nutritious meals in VALID JSON format. CRITICAL: Ensure all strings are properly escaped. Never use quotes within text - use single quotes or rephrase. Each meal should include detailed step-by-step cooking instructions and ingredient substitution suggestions. Meals should vary in calorie content (low, medium, high) to give users options.`,
     
     user: `Create 3 DIFFERENT ${params.mealType} meal options for someone with a ${params.fitnessGoal} fitness goal following a ${params.dietaryPreference} diet.
 
@@ -179,11 +189,14 @@ For EACH meal, return JSON object with this EXACT structure:
 
 RETURN as JSON array with 3 meal objects: [meal1, meal2, meal3]
 
-IMPORTANT:
+CRITICAL JSON FORMATTING RULES:
+- NEVER use double quotes inside any text fields - use single quotes instead
+- Avoid special characters that need escaping
+- Keep all text simple and clean
 - Instructions must be step-by-step and detailed (minimum 4 steps, maximum 8 steps)
 - Include prep time and cook time estimates
 - Each meal should have 2-3 substitution options
-- Substitutions should cover dietary variations (e.g., chicken → tofu, salmon for pescatarian)
+- Substitutions should cover dietary variations (e.g., chicken to tofu, salmon for pescatarian)
 - Calories should be accurate and realistic
 - Make meals interesting and varied (not just different portions of same dish)`
   };
