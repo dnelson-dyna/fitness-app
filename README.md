@@ -1,6 +1,6 @@
-# React + TypeScript + Vite
+# FitFlow - AI-Powered Fitness & Meal Planning App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript + Vite application with Auth0 authentication, Azure Cosmos DB, and Azure OpenAI integration.
 
 Currently, two official plugins are available:
 
