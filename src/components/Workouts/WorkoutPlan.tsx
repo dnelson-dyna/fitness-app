@@ -47,6 +47,15 @@ export default function WorkoutPlan({
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-secondary-100 text-secondary-800">
                 {workout.difficulty}
               </span>
+              {workout.isAiGenerated !== undefined && (
+                <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm ${
+                  workout.isAiGenerated 
+                    ? 'bg-purple-100 text-purple-800' 
+                    : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {workout.isAiGenerated ? 'AI Generated' : 'Mock Data'}
+                </span>
+              )}
             </div>
           </div>
 

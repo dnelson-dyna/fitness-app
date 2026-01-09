@@ -20,6 +20,15 @@ export default function WorkoutCard({ workout, onClick }: WorkoutCardProps) {
             <span className="inline-flex items-center px-2 py-1 rounded text-xs bg-secondary-100 text-secondary-800">
               {workout.difficulty}
             </span>
+            {workout.isAiGenerated !== undefined && (
+              <span className={`inline-flex items-center px-2 py-1 rounded text-xs ${
+                workout.isAiGenerated 
+                  ? 'bg-purple-100 text-purple-800' 
+                  : 'bg-gray-100 text-gray-800'
+              }`}>
+                {workout.isAiGenerated ? 'AI Generated' : 'Mock Data'}
+              </span>
+            )}
             {workout.completed && (
               <span className="inline-flex items-center px-2 py-1 rounded text-xs bg-green-100 text-green-800">
                 Completed

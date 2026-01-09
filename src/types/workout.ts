@@ -28,6 +28,7 @@ export interface Workout {
   completed: boolean;
   completedDate?: Date;
   createdAt: Date;
+  isAiGenerated?: boolean;
 }
 
 export interface WorkoutProgress {

@@ -18,21 +18,38 @@ export async function generateWorkout(request: HttpRequest, context: InvocationC
     const body = await request.json() as unknown;
     const params = generateWorkoutSchema.parse(body);
 
-    // Generate workout using Azure OpenAI
-    const aiResponse = await openAI.generateWorkoutPlan({
-      bodyArea: params.bodyArea,
-      fitnessGoal: params.fitnessGoal,
-      difficulty: params.difficulty,
-    });
+    let aiData: any;
+    let exercisesWithIds: Exercise[];
+    let isAiGenerated = false;
 
-    const aiData = JSON.parse(aiResponse);
+    try {
+      // Generate workout using Azure OpenAI
+      const aiResponse = await openAI.generateWorkoutPlan({
+        bodyArea: params.bodyArea,
+        fitnessGoal: params.fitnessGoal,
+        difficulty: params.difficulty,
+      });
 
-    // Add IDs and completed status to exercises
-    const exercisesWithIds: Exercise[] = aiData.exercises.map((exercise: any) => ({
-      ...exercise,
-      id: randomUUID(),
-      completed: false,
-    }));
+      aiData = JSON.parse(aiResponse);
+      
+      // Add IDs and completed status to exercises
+      exercisesWithIds = aiData.exercises.map((exercise: any) => ({
+        ...exercise,
+        id: randomUUID(),
+        completed: false,
+      }));
+
+      isAiGenerated = true;
+      context.log('✅ Generated workout using AI');
+    } catch (aiError) {
+      context.log('⚠️ AI generation failed, using mock data:', aiError instanceof Error ? aiError.message : 'Unknown error');
+      
+      // Generate mock workout as fallback
+      const mockWorkout = generateMockWorkout(params);
+      aiData = mockWorkout;
+      exercisesWithIds = mockWorkout.exercises;
+      isAiGenerated = false;
+    }
 
     // Create workout object
     const workout: Workout = {
@@ -48,6 +65,7 @@ export async function generateWorkout(request: HttpRequest, context: InvocationC
       completed: false,
       createdAt: new Date(),
       updatedAt: new Date(),
+      isAiGenerated: isAiGenerated,
     };
 
     // Save to Cosmos DB
@@ -82,6 +100,49 @@ export async function generateWorkout(request: HttpRequest, context: InvocationC
       },
     };
   }
+}
+
+function generateMockWorkout(params: z.infer<typeof generateWorkoutSchema>): any {
+  const mockExercises = [
+    {
+      id: randomUUID(),
+      name: `${params.bodyArea} Exercise 1`,
+      sets: 3,
+      reps: 12,
+      duration: 0,
+      description: `Perform this ${params.difficulty} level exercise focusing on ${params.bodyArea}`,
+      formTips: ['Keep proper form', 'Control the movement'],
+      completed: false,
+    },
+    {
+      id: randomUUID(),
+      name: `${params.bodyArea} Exercise 2`,
+      sets: 3,
+      reps: 10,
+      duration: 0,
+      description: `Another effective ${params.bodyArea} exercise`,
+      formTips: ['Breathe steadily', 'Maintain tension'],
+      completed: false,
+    },
+    {
+      id: randomUUID(),
+      name: `${params.bodyArea} Exercise 3`,
+      sets: 4,
+      reps: 8,
+      duration: 0,
+      description: `Advanced ${params.bodyArea} movement`,
+      formTips: ['Focus on the target muscle', 'Use full range of motion'],
+      completed: false,
+    },
+  ];
+
+  return {
+    name: `${params.bodyArea.charAt(0).toUpperCase() + params.bodyArea.slice(1)} ${params.difficulty.charAt(0).toUpperCase() + params.difficulty.slice(1)} Workout`,
+    description: `A ${params.difficulty} level workout targeting ${params.bodyArea}`,
+    estimatedDuration: 45,
+    caloriesBurned: params.difficulty === 'beginner' ? 200 : params.difficulty === 'intermediate' ? 300 : 400,
+    exercises: mockExercises,
+  };
 }
 
 app.http('generateWorkout', {

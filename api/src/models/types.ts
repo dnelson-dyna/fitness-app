@@ -29,6 +29,7 @@ export interface Workout {
   completedDate?: Date;
   createdAt: Date;
   updatedAt: Date;
+  isAiGenerated?: boolean;
 }
 
 export interface Macros {
