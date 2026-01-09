@@ -27,7 +27,16 @@ export default function MealPlansPage() {
   const [error, setError] = useState<string | null>(null);
 
   const handleGenerateOptions = async (mealType: 'breakfast' | 'lunch' | 'dinner' | 'snack') => {
-    if (!user || !selectedGoal || !selectedDietaryPref || !selectedProtein) return;
+    // Validate all required data
+    if (!user) {
+      setError('Please sign in to generate meal options');
+      return;
+    }
+    
+    if (!selectedGoal || !selectedDietaryPref || !selectedProtein) {
+      setError('Missing selection data. Please start over.');
+      return;
+    }
 
     setIsLoading(true);
     setError(null);
@@ -225,13 +234,21 @@ export default function MealPlansPage() {
       {step === 5 && (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Step 5: Select Meal Type</h2>
+          
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+              <p className="text-red-800 dark:text-red-400">{error}</p>
+            </div>
+          )}
+          
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {mealTypes.map((type) => (
               <button
                 key={type}
                 onClick={() => handleGenerateOptions(type)}
+                disabled={isLoading}
                 type="button"
-                className="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 active:bg-blue-100 dark:active:bg-blue-900/30 active:border-blue-600 dark:active:border-blue-500 transition-colors touch-manipulation"
+                className="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 active:bg-blue-100 dark:active:bg-blue-900/30 active:border-blue-600 dark:active:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors touch-manipulation"
               >
                 <div className="text-2xl mb-2">
                   {type === 'breakfast' && '🍳'}
