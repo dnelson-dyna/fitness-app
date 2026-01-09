@@ -9,6 +9,7 @@ class CosmosDBClient {
     meals?: Container;
     users?: Container;
     progress?: Container;
+    mealLogs?: Container;
   } = {};
 
   private getClient(): CosmosClient {
@@ -34,6 +35,7 @@ class CosmosDBClient {
         { id: 'meals', partitionKey: '/userId' },
         { id: 'users', partitionKey: '/id' },
         { id: 'progress', partitionKey: '/userId' },
+        { id: 'mealLogs', partitionKey: '/userId' },
       ];
 
       for (const config of containerConfigs) {
@@ -46,7 +48,7 @@ class CosmosDBClient {
     }
   }
 
-  getContainer(name: 'workouts' | 'meals' | 'users' | 'progress'): Container {
+  getContainer(name: 'workouts' | 'meals' | 'users' | 'progress' | 'mealLogs'): Container {
     const container = this.containers[name];
     if (!container) {
       throw new Error(`Container ${name} not initialized`);

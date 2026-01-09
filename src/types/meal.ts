@@ -17,6 +17,23 @@ export interface Ingredient {
   calories: number;
 }
 
+export interface MealInstruction {
+  step: number;
+  description: string;
+}
+
+export interface SubstitutionOption {
+  name: string;
+  amount?: string;
+  calories?: number;
+  notes?: string;
+}
+
+export interface IngredientSubstitution {
+  ingredient: string;
+  alternatives: SubstitutionOption[];
+}
+
 export interface Meal {
   id: string;
   name: string;
@@ -25,9 +42,30 @@ export interface Meal {
   calories: number;
   macros: Macros;
   ingredients: Ingredient[];
-  instructions: string;
+  instructions: MealInstruction[];
   prepTime?: number; // in minutes
+  cookTime?: number; // in minutes
+  totalTime?: number; // in minutes
+  difficulty?: 'easy' | 'moderate' | 'advanced';
+  substitutions: IngredientSubstitution[];
   imageUrl?: string;
+}
+
+export interface MealLogEntry {
+  id: string;
+  userId: string;
+  mealId: string;
+  meal: Meal;
+  mealType: MealType;
+  loggedAt: Date;
+  notes?: string;
+}
+
+export interface DailyMealLog {
+  date: string; // YYYY-MM-DD
+  meals: MealLogEntry[];
+  totalCalories: number;
+  totalMacros: Macros;
 }
 
 export interface MealPlan {

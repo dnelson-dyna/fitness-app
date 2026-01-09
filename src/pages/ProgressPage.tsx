@@ -1,11 +1,22 @@
-import { useProgress } from '../hooks';
+import { useEffect } from 'react';
+import { useProgress, useMealTracking } from '../hooks';
 import { ProgressDashboard } from '../components/Progress';
 import { Loading, Button } from '../components/Common';
 import { useAuth0Context } from '../hooks/useAuth0Context';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProgressPage() {
-  const { isAuthenticated, isLoading: authLoading, loginWithRedirect } = useAuth0Context();
+  const navigate = useNavigate();
+  const { isAuthenticated, isLoading: authLoading, loginWithRedirect, user } = useAuth0Context();
   const { stats, isLoading } = useProgress();
+  const { dailyLog, isLoading: mealLogLoading, getDailyLog } = useMealTracking();
+
+  // Load today's meal log when authenticated
+  useEffect(() => {
+    if (isAuthenticated && user?.sub) {
+      getDailyLog(user.sub);
+    }
+  }, [isAuthenticated, user, getDailyLog]);
 
   // Show loading while checking auth
   if (authLoading) {
@@ -66,6 +77,96 @@ export default function ProgressPage() {
         <p className="text-gray-600 mt-2">
           Track your fitness journey and celebrate your achievements
         </p>
+      </div>
+
+      {/* Today's Meals Section */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-gray-900">Today's Meals</h2>
+          <Button onClick={() => navigate('/meals')} variant="outline" size="sm">
+            Add Meal
+          </Button>
+        </div>
+
+        {mealLogLoading ? (
+          <div className="text-center py-8 text-gray-500">Loading meals...</div>
+        ) : dailyLog && dailyLog.meals.length > 0 ? (
+          <>
+            {/* Calorie Summary */}
+            <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-orange-600">{dailyLog.totalCalories}</div>
+                  <div className="text-xs text-gray-600">Total Calories</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-blue-600">{dailyLog.totalMacros.protein}g</div>
+                  <div className="text-xs text-gray-600">Protein</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <div className="text-lg font-bold text-green-600">{dailyLog.totalMacros.carbs}g</div>
+                    <div className="text-xs text-gray-600">Carbs</div>
+                  </div>
+                  <div>
+                    <div className="text-lg font-bold text-yellow-600">{dailyLog.totalMacros.fats}g</div>
+                    <div className="text-xs text-gray-600">Fats</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Meal List */}
+            <div className="space-y-3">
+              {dailyLog.meals.map((entry) => (
+                <div key={entry.id} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium capitalize mb-2">
+                        {entry.mealType}
+                      </span>
+                      <h3 className="font-semibold text-gray-900">{entry.meal.name}</h3>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-orange-600">{entry.meal.calories} cal</div>
+                      <div className="text-xs text-gray-500">
+                        {new Date(entry.loggedAt).toLocaleTimeString('en-US', { 
+                          hour: 'numeric', 
+                          minute: '2-digit' 
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-3 text-sm">
+                    <span className="text-blue-600">P: {entry.meal.macros.protein}g</span>
+                    <span className="text-green-600">C: {entry.meal.macros.carbs}g</span>
+                    <span className="text-yellow-600">F: {entry.meal.macros.fats}g</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-8">
+            <svg
+              className="mx-auto h-12 w-12 text-gray-400 mb-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+            <p className="text-gray-500 mb-4">No meals logged today</p>
+            <Button onClick={() => navigate('/meals')} variant="primary">
+              Log Your First Meal
+            </Button>
+          </div>
+        )}
       </div>
 
       <ProgressDashboard stats={stats} />

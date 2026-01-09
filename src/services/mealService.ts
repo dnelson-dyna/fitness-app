@@ -1,4 +1,4 @@
-import type { MealPlan, Meal, Ingredient, Macros, BodyArea, FitnessGoal, DietaryPreference, MealType, ProteinPreference } from '../types';
+import type { MealPlan, Meal, Ingredient, Macros, BodyArea, FitnessGoal, DietaryPreference, MealType, ProteinPreference, MealLogEntry, DailyMealLog } from '../types';
 import { mockDelay, API_BASE_URL } from './api';
 
 /**
@@ -104,7 +104,17 @@ const generateMockMeal = (
       fats: Math.round(totalCalories * 0.3 / 9),
     },
     ingredients,
-    instructions: 'Prepare all ingredients and combine according to your preference. Cook protein sources thoroughly.',
+    instructions: [
+      {
+        step: 1,
+        description: 'Prepare all ingredients and combine according to your preference.',
+      },
+      {
+        step: 2,
+        description: 'Cook protein sources thoroughly to safe internal temperature.',
+      },
+    ],
+    substitutions: [],
     prepTime: 20,
   };
 };
@@ -254,6 +264,79 @@ export const mealService = {
     } catch (error) {
       console.error('Error saving meal plan:', error);
       return mealPlan;
+    }
+  },
+
+  /**
+   * Generate 3 meal options for a specific meal type
+   */
+  generateMealOptions: async (params: {
+    userId: string;
+    mealType: MealType;
+    fitnessGoal: FitnessGoal;
+    dietaryPreference: DietaryPreference;
+    proteinPreference: string;
+    dailyCalorieTarget: number;
+  }): Promise<{ meals: Meal[]; dailyCalorieTarget: number; mealTypeCalorieRange: Record<string, string> }> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/meals/options`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params),
+      });
+
+      if (!response.ok) throw new Error('Failed to generate meal options');
+      return await response.json();
+    } catch (error) {
+      console.error('Error generating meal options:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Log a meal to the daily meal log
+   */
+  logMeal: async (userId: string, meal: Meal, mealType: MealType, notes?: string): Promise<MealLogEntry> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/meals/log`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          meal,
+          mealType,
+          notes,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to log meal');
+      return await response.json();
+    } catch (error) {
+      console.error('Error logging meal:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get daily meal log for a specific date
+   */
+  getDailyMealLog: async (userId: string, date?: string): Promise<DailyMealLog> => {
+    try {
+      const url = date
+        ? `${API_BASE_URL}/meals/log/${userId}?date=${date}`
+        : `${API_BASE_URL}/meals/log/${userId}`;
+      
+      const response = await fetch(url);
+
+      if (!response.ok) throw new Error('Failed to get daily meal log');
+      return await response.json();
+    } catch (error) {
+      console.error('Error getting daily meal log:', error);
+      throw error;
     }
   },
 };

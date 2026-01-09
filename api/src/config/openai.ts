@@ -10,6 +10,9 @@ class OpenAIClient {
         endpoint: env.AZURE_OPENAI_ENDPOINT,
         apiKey: env.AZURE_OPENAI_KEY,
         apiVersion: '2024-08-01-preview',
+        defaultHeaders: {
+          'api-key': env.AZURE_OPENAI_KEY,
+        },
       });
     }
     return this.client;

@@ -207,7 +207,11 @@ export default function MealCard({ meal, onChangeProtein, onRegenerateMeal, diet
             {/* Instructions */}
             <div>
               <h4 className="font-medium text-gray-900 mb-2">Instructions:</h4>
-              <p className="text-sm text-gray-700">{meal.instructions}</p>
+              <ol className="text-sm text-gray-700 space-y-1 list-decimal list-inside">
+                {meal.instructions.map((instruction) => (
+                  <li key={instruction.step}>{instruction.description}</li>
+                ))}
+              </ol>
             </div>
           </div>
         )}

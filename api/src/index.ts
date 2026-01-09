@@ -6,6 +6,9 @@ import './functions/getUserProfile';
 import './functions/updateUserProfile';
 import './functions/createWeightCheckIn';
 import './functions/getWeightHistory';
+import './functions/generateMealOptions';
+import './functions/logMeal';
+import './functions/getDailyMealLog';
 
 export * from './health';
 export * from './functions/generateMeal';
@@ -14,3 +17,6 @@ export * from './functions/getUserProfile';
 export * from './functions/updateUserProfile';
 export * from './functions/createWeightCheckIn';
 export * from './functions/getWeightHistory';
+export * from './functions/generateMealOptions';
+export * from './functions/logMeal';
+export * from './functions/getDailyMealLog';
