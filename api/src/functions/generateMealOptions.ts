@@ -20,6 +20,7 @@ export async function generateMealOptions(request: HttpRequest, context: Invocat
     const params = generateMealOptionsSchema.parse(body);
 
     let meals: any[];
+    let isAiGenerated = false;
 
     // Try AI generation first, fallback to mock data if it fails
     try {
@@ -35,8 +36,16 @@ export async function generateMealOptions(request: HttpRequest, context: Invocat
         { responseFormat: 'json', temperature: 0.8, maxTokens: 2500 }
       );
 
-      // Parse response
-      const parsedResponse = JSON.parse(response);
+      // Parse response with error handling
+      let parsedResponse;
+      try {
+        parsedResponse = JSON.parse(response);
+      } catch (parseError) {
+        // Try to clean up common JSON errors
+        context.log('⚠️ JSON parse error, attempting cleanup...');
+        const cleanedResponse = cleanupJsonString(response);
+        parsedResponse = JSON.parse(cleanedResponse);
+      }
       
       // Handle both array and object responses
       if (Array.isArray(parsedResponse)) {
@@ -47,12 +56,14 @@ export async function generateMealOptions(request: HttpRequest, context: Invocat
         throw new Error('AI response format invalid - expected array or object with meals array');
       }
       
+      isAiGenerated = true;
       context.log('✅ Generated meals using AI');
     } catch (aiError) {
       context.log('⚠️ AI generation failed, using mock data:', aiError instanceof Error ? aiError.message : 'Unknown error');
       
       // Generate mock meals as fallback
       meals = generateMockMeals(params);
+      isAiGenerated = false;
     }
     
     // Ensure meals is an array
@@ -69,6 +80,7 @@ export async function generateMealOptions(request: HttpRequest, context: Invocat
         id: randomUUID(),
       })) || [],
       substitutions: meal.substitutions || [],
+      isAiGenerated: isAiGenerated,
     }));
 
     // Calculate meal type calorie ranges
@@ -129,7 +141,16 @@ function getMealOptionsPrompt(params: {
   const targets = mealCalorieTargets[params.mealType];
 
   return {
-    system: `You are a certified nutritionist creating personalized meal plans. Generate balanced, nutritious meals in VALID JSON format. CRITICAL: Ensure all strings are properly escaped. Never use quotes within text - use single quotes or rephrase. Each meal should include detailed step-by-step cooking instructions and ingredient substitution suggestions. Meals should vary in calorie content (low, medium, high) to give users options.`,
+    system: `You are a certified nutritionist creating personalized meal plans. Generate balanced, nutritious meals in VALID JSON format. 
+
+CRITICAL JSON RULES - MUST FOLLOW:
+1. NEVER use double quotes (") inside any text values - use apostrophes (') instead
+2. Example: "Season the chicken and let it rest" NOT "Season the \"chicken\" and let it rest"
+3. Keep text simple - avoid special characters that need escaping
+4. All numeric values must be numbers, not strings
+5. Arrays must not have trailing commas
+
+Each meal should include detailed step-by-step cooking instructions and ingredient substitution suggestions. Meals should vary in calorie content (low, medium, high) to give users options.`,
     
     user: `Create 3 DIFFERENT ${params.mealType} meal options for someone with a ${params.fitnessGoal} fitness goal following a ${params.dietaryPreference} diet.
 
@@ -189,17 +210,42 @@ For EACH meal, return JSON object with this EXACT structure:
 
 RETURN as JSON array with 3 meal objects: [meal1, meal2, meal3]
 
-CRITICAL JSON FORMATTING RULES:
-- NEVER use double quotes inside any text fields - use single quotes instead
-- Avoid special characters that need escaping
-- Keep all text simple and clean
-- Instructions must be step-by-step and detailed (minimum 4 steps, maximum 8 steps)
-- Include prep time and cook time estimates
-- Each meal should have 2-3 substitution options
-- Substitutions should cover dietary variations (e.g., chicken to tofu, salmon for pescatarian)
-- Calories should be accurate and realistic
-- Make meals interesting and varied (not just different portions of same dish)`
+CRITICAL - OUTPUT FORMAT:
+- Response must be ONLY the JSON array - no extra text before or after
+- NO markdown code blocks, NO explanations, ONLY valid JSON
+- Use apostrophes (') not quotes (") inside text values
+- Example good: "description": "Heat the pan and add oil"
+- Example bad: "description": "Heat the \"pan\" and add oil"
+- Instructions must be 4-8 steps, detailed but simple language
+- Each meal needs 2-3 substitution options`
   };
+}
+
+function cleanupJsonString(jsonStr: string): string {
+  // Remove any potential BOM or leading/trailing whitespace
+  let cleaned = jsonStr.trim();
+  
+  // Fix common issues with escaped characters in strings
+  // This is a simple approach - find content between quotes and ensure proper escaping
+  try {
+    // Try to extract just the JSON array/object if there's extra text
+    const jsonMatch = cleaned.match(/\[[\s\S]*\]|\{[\s\S]*\}/);
+    if (jsonMatch) {
+      cleaned = jsonMatch[0];
+    }
+    
+    // Remove any trailing commas before closing brackets
+    cleaned = cleaned.replace(/,(\s*[}\]])/g, '$1');
+    
+    // Attempt to fix common unescaped quote issues in text values
+    // This is a heuristic approach and may not catch all cases
+    cleaned = cleaned.replace(/([^\\])"([^"]*)"(\s*:)/g, '$1\\"$2\\"$3');
+    
+    return cleaned;
+  } catch (e) {
+    // If cleanup fails, return original
+    return jsonStr;
+  }
 }
 
 function generateMockMeals(params: z.infer<typeof generateMealOptionsSchema>): any[] {

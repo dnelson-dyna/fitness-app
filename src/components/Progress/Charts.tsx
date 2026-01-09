@@ -34,8 +34,8 @@ export default function Charts({ workoutsByGoal, workoutsByArea }: ChartsProps) 
     return (
       <div key={label} className="space-y-1">
         <div className="flex justify-between text-sm">
-          <span className="text-gray-700">{label}</span>
-          <span className="text-gray-900 font-medium">{value}</span>
+          <span className="text-gray-700 dark:text-gray-400">{label}</span>
+          <span className="text-gray-900 dark:text-white font-medium">{value}</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
@@ -51,7 +51,7 @@ export default function Charts({ workoutsByGoal, workoutsByArea }: ChartsProps) 
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Workouts by Goal */}
       <Card>
-        <h3 className="font-semibold text-gray-900 mb-4">Workouts by Goal</h3>
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Workouts by Goal</h3>
         {totalGoalWorkouts > 0 ? (
           <div className="space-y-3">
             {Object.entries(workoutsByGoal).map(([goal, count]) =>
@@ -59,7 +59,7 @@ export default function Charts({ workoutsByGoal, workoutsByArea }: ChartsProps) 
             )}
           </div>
         ) : (
-          <p className="text-gray-500 text-sm text-center py-8">
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">
             Complete your first workout to see progress!
           </p>
         )}
@@ -67,7 +67,7 @@ export default function Charts({ workoutsByGoal, workoutsByArea }: ChartsProps) 
 
       {/* Workouts by Body Area */}
       <Card>
-        <h3 className="font-semibold text-gray-900 mb-4">Workouts by Body Area</h3>
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Workouts by Body Area</h3>
         {totalAreaWorkouts > 0 ? (
           <div className="space-y-3">
             {Object.entries(workoutsByArea).map(([area, count]) =>
@@ -75,7 +75,7 @@ export default function Charts({ workoutsByGoal, workoutsByArea }: ChartsProps) 
             )}
           </div>
         ) : (
-          <p className="text-gray-500 text-sm text-center py-8">
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">
             Complete your first workout to see progress!
           </p>
         )}

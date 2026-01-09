@@ -49,6 +49,7 @@ export interface Meal {
   difficulty?: 'easy' | 'moderate' | 'advanced';
   substitutions: IngredientSubstitution[];
   imageUrl?: string;
+  isAiGenerated?: boolean;
 }
 
 export interface MealLogEntry {

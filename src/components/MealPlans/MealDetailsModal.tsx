@@ -186,10 +186,21 @@ export const MealDetailsModal: React.FC<MealDetailsModalProps> = ({
         <div className="p-6 border-b border-gray-200">
           <div className="flex justify-between items-start">
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{meal.name}</h2>
-              <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium capitalize">
-                {meal.type}
-              </span>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{meal.name}</h2>
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium capitalize">
+                  {meal.type}
+                </span>
+                {meal.isAiGenerated !== undefined && (
+                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                    meal.isAiGenerated 
+                      ? 'bg-purple-100 text-purple-800' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {meal.isAiGenerated ? 'AI Generated' : 'Mock Data'}
+                  </span>
+                )}
+              </div>
             </div>
             <button
               onClick={onClose}

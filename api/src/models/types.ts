@@ -54,6 +54,7 @@ export interface Meal {
   ingredients: Ingredient[];
   instructions: string;
   prepTime?: number;
+  isAiGenerated?: boolean;
 }
 
 export interface MealPlan {

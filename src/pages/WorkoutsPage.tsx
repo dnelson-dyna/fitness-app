@@ -29,8 +29,8 @@ export default function WorkoutsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Workouts</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Workouts</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
           {currentWorkout
             ? 'Complete your exercises and track your progress'
             : 'Choose your focus area and fitness goal to generate a personalized workout'}

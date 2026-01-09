@@ -46,7 +46,7 @@ export default function WorkoutSelector({ onGenerate, isLoading }: WorkoutSelect
     <div className="space-y-6">
       {/* Body Area Selection */}
       <div>
-        <h2 className="text-lg font-semibold mb-3 text-gray-900">Select Body Area</h2>
+        <h2 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Select Body Area</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {bodyAreas.map((area) => (
             <Card
@@ -56,13 +56,13 @@ export default function WorkoutSelector({ onGenerate, isLoading }: WorkoutSelect
               onClick={() => setSelectedBodyArea(area.id)}
               className={`cursor-pointer transition-all ${
                 selectedBodyArea === area.id
-                  ? 'ring-2 ring-primary-500 bg-primary-50'
-                  : 'hover:bg-gray-50'
+                  ? 'ring-2 ring-primary-500 dark:ring-primary-400 bg-primary-50 dark:bg-primary-900/30'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
             >
               <div className="text-center">
-                <h3 className="font-medium text-gray-900">{area.label}</h3>
-                <p className="text-xs text-gray-600 mt-1">{area.description}</p>
+                <h3 className="font-medium text-gray-900 dark:text-white">{area.label}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{area.description}</p>
               </div>
             </Card>
           ))}
@@ -71,7 +71,7 @@ export default function WorkoutSelector({ onGenerate, isLoading }: WorkoutSelect
 
       {/* Fitness Goal Selection */}
       <div>
-        <h2 className="text-lg font-semibold mb-3 text-gray-900">Select Fitness Goal</h2>
+        <h2 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Select Fitness Goal</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {fitnessGoals.map((goal) => (
             <Card
@@ -81,13 +81,13 @@ export default function WorkoutSelector({ onGenerate, isLoading }: WorkoutSelect
               onClick={() => setSelectedGoal(goal.id)}
               className={`cursor-pointer transition-all ${
                 selectedGoal === goal.id
-                  ? 'ring-2 ring-secondary-500 bg-secondary-50'
-                  : 'hover:bg-gray-50'
+                  ? 'ring-2 ring-secondary-500 dark:ring-secondary-400 bg-secondary-50 dark:bg-secondary-900/30'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
             >
               <div>
-                <h3 className="font-medium text-gray-900">{goal.label}</h3>
-                <p className="text-sm text-gray-600 mt-1">{goal.description}</p>
+                <h3 className="font-medium text-gray-900 dark:text-white">{goal.label}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{goal.description}</p>
               </div>
             </Card>
           ))}
@@ -96,7 +96,7 @@ export default function WorkoutSelector({ onGenerate, isLoading }: WorkoutSelect
 
       {/* Difficulty Selection */}
       <div>
-        <h2 className="text-lg font-semibold mb-3 text-gray-900">Select Difficulty</h2>
+        <h2 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Select Difficulty</h2>
         <div className="flex gap-3">
           {difficulties.map((diff) => (
             <button
@@ -104,8 +104,8 @@ export default function WorkoutSelector({ onGenerate, isLoading }: WorkoutSelect
               onClick={() => setSelectedDifficulty(diff.id)}
               className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
                 selectedDifficulty === diff.id
-                  ? 'bg-accent-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-accent-500 dark:bg-accent-600 text-white'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {diff.label}

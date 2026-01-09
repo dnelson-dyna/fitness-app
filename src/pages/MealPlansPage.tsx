@@ -87,8 +87,8 @@ export default function MealPlansPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Meal Plans</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Meal Plans</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
             {step === 6 ? 'Choose your perfect meal' : 'Select your preferences to generate meal options'}
           </p>
         </div>
@@ -130,8 +130,8 @@ export default function MealPlansPage() {
 
       {/* Step 1: Fitness Goal */}
       {step === 1 && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Step 1: Select Your Fitness Goal</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Step 1: Select Your Fitness Goal</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {fitnessGoals.map((goal) => (
               <button
@@ -140,7 +140,7 @@ export default function MealPlansPage() {
                   setSelectedGoal(goal);
                   setStep(2);
                 }}
-                className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors capitalize"
+                className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors capitalize text-gray-900 dark:text-white"
               >
                 {goal}
               </button>
@@ -151,8 +151,8 @@ export default function MealPlansPage() {
 
       {/* Step 2: Dietary Preference */}
       {step === 2 && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Step 2: Select Your Dietary Preference</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Step 2: Select Your Dietary Preference</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {dietaryPreferences.map((pref) => (
               <button
@@ -161,7 +161,7 @@ export default function MealPlansPage() {
                   setSelectedDietaryPref(pref);
                   setStep(3);
                 }}
-                className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors capitalize"
+                className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors capitalize text-gray-900 dark:text-white"
               >
                 {pref === 'highprotein' ? 'High Protein' : pref === 'glutenfree' ? 'Gluten Free' : pref === 'dairyfree' ? 'Dairy Free' : pref}
               </button>
@@ -172,8 +172,8 @@ export default function MealPlansPage() {
 
       {/* Step 3: Protein Preference */}
       {step === 3 && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Step 3: Select Your Protein Preference</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Step 3: Select Your Protein Preference</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {proteinOptions.map((protein) => (
               <button
@@ -182,7 +182,7 @@ export default function MealPlansPage() {
                   setSelectedProtein(protein);
                   setStep(4);
                 }}
-                className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors capitalize"
+                className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors capitalize text-gray-900 dark:text-white"
               >
                 {protein}
               </button>
@@ -193,10 +193,10 @@ export default function MealPlansPage() {
 
       {/* Step 4: Daily Calorie Target */}
       {step === 4 && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Step 4: Enter Your Daily Calorie Target</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Step 4: Enter Your Daily Calorie Target</h2>
           <div className="max-w-md mx-auto">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Daily Calorie Target
             </label>
             <input
@@ -206,9 +206,9 @@ export default function MealPlansPage() {
               step="50"
               value={dailyCalories}
               onChange={(e) => setDailyCalories(Number(e.target.value))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
               Recommended range: 1500-3500 calories
             </p>
             <Button
@@ -223,14 +223,14 @@ export default function MealPlansPage() {
 
       {/* Step 5: Meal Type Selection */}
       {step === 5 && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Step 5: Select Meal Type</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Step 5: Select Meal Type</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {mealTypes.map((type) => (
               <button
                 key={type}
                 onClick={() => handleGenerateOptions(type)}
-                className="p-6 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                className="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
               >
                 <div className="text-2xl mb-2">
                   {type === 'breakfast' && '🍳'}
@@ -238,15 +238,15 @@ export default function MealPlansPage() {
                   {type === 'dinner' && '🍽️'}
                   {type === 'snack' && '🍎'}
                 </div>
-                <div className="font-semibold capitalize">{type}</div>
+                <div className="font-semibold capitalize text-gray-900 dark:text-white">{type}</div>
               </button>
             ))}
           </div>
           
           {/* Summary */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-semibold mb-2">Your Selection:</h3>
-            <ul className="text-sm space-y-1 text-gray-700">
+          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Your Selection:</h3>
+            <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
               <li><span className="font-medium">Goal:</span> {selectedGoal}</li>
               <li><span className="font-medium">Diet:</span> {selectedDietaryPref}</li>
               <li><span className="font-medium">Protein:</span> {selectedProtein}</li>

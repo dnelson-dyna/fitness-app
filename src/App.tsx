@@ -1,12 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header, Navigation, Footer } from './components/Layout';
 import { Home, WorkoutsPage, MealPlansPage, ProgressPage, SettingsPage, Callback } from './pages';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col bg-gray-50">
-        <Header />
+    <ThemeProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
+          <Header />
 
         <main className="flex-1 container-custom py-6 md:py-8">
           <Routes>
@@ -23,6 +25,7 @@ function App() {
         <Navigation />
       </div>
     </Router>
+    </ThemeProvider>
   );
 }
 

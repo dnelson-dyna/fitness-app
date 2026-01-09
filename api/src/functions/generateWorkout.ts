@@ -30,7 +30,14 @@ export async function generateWorkout(request: HttpRequest, context: InvocationC
         difficulty: params.difficulty,
       });
 
-      aiData = JSON.parse(aiResponse);
+      // Parse response with error handling
+      try {
+        aiData = JSON.parse(aiResponse);
+      } catch (parseError) {
+        context.log('⚠️ JSON parse error, attempting cleanup...');
+        const cleanedResponse = cleanupJsonString(aiResponse);
+        aiData = JSON.parse(cleanedResponse);
+      }
       
       // Add IDs and completed status to exercises
       exercisesWithIds = aiData.exercises.map((exercise: any) => ({
@@ -99,6 +106,27 @@ export async function generateWorkout(request: HttpRequest, context: InvocationC
         message: error.message,
       },
     };
+  }
+}
+
+function cleanupJsonString(jsonStr: string): string {
+  // Remove any potential BOM or leading/trailing whitespace
+  let cleaned = jsonStr.trim();
+  
+  // Try to extract just the JSON array/object if there's extra text
+  try {
+    const jsonMatch = cleaned.match(/\[[\s\S]*\]|\{[\s\S]*\}/);
+    if (jsonMatch) {
+      cleaned = jsonMatch[0];
+    }
+    
+    // Remove any trailing commas before closing brackets
+    cleaned = cleaned.replace(/,(\s*[}\]])/g, '$1');
+    
+    return cleaned;
+  } catch (e) {
+    // If cleanup fails, return original
+    return jsonStr;
   }
 }
 

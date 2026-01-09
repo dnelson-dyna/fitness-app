@@ -30,7 +30,7 @@ export default function Card({
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-md ${paddingStyles[padding]} ${hoverStyles} ${clickableStyles} ${className}`}
+      className={`bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/30 transition-colors ${paddingStyles[padding]} ${hoverStyles} ${clickableStyles} ${className}`}
       onClick={onClick}
     >
       {children}

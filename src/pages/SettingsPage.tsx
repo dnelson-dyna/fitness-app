@@ -137,8 +137,8 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6 max-w-4xl">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Profile</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
           Manage your profile and preferences
         </p>
       </div>
@@ -157,11 +157,11 @@ export default function SettingsPage() {
 
       {/* Profile Form */}
       <Card>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Profile Information</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Profile Information</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Name
               </label>
               <input
@@ -169,13 +169,13 @@ export default function SettingsPage() {
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Email
               </label>
               <input
@@ -183,13 +183,13 @@ export default function SettingsPage() {
                 id="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="age" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Age
               </label>
               <input
@@ -197,14 +197,14 @@ export default function SettingsPage() {
                 id="age"
                 value={formData.age}
                 onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                 min="13"
                 max="120"
               />
             </div>
 
             <div>
-              <label htmlFor="height" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="height" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Height (inches)
               </label>
               <input
@@ -212,7 +212,7 @@ export default function SettingsPage() {
                 id="height"
                 value={formData.height}
                 onChange={(e) => setFormData({ ...formData, height: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                 min="36"
                 max="96"
                 step="0.1"
@@ -220,7 +220,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="weight" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Current Weight (lbs)
               </label>
               <input
@@ -228,7 +228,7 @@ export default function SettingsPage() {
                 id="weight"
                 value={formData.weight}
                 onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                 min="50"
                 max="1000"
                 step="0.1"
@@ -236,7 +236,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label htmlFor="targetWeight" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="targetWeight" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Target Weight (lbs)
               </label>
               <input
@@ -244,7 +244,7 @@ export default function SettingsPage() {
                 id="targetWeight"
                 value={formData.targetWeight}
                 onChange={(e) => setFormData({ ...formData, targetWeight: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                 min="50"
                 max="1000"
                 step="0.1"
@@ -252,14 +252,14 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label htmlFor="fitnessGoal" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="fitnessGoal" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Fitness Goal
               </label>
               <select
                 id="fitnessGoal"
                 value={formData.fitnessGoal}
                 onChange={(e) => setFormData({ ...formData, fitnessGoal: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
               >
                 <option value="">Select a goal</option>
                 <option value="weightloss">Weight Loss</option>
@@ -271,14 +271,14 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label htmlFor="dietaryPreference" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="dietaryPreference" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Dietary Preference
               </label>
               <select
                 id="dietaryPreference"
                 value={formData.dietaryPreference}
                 onChange={(e) => setFormData({ ...formData, dietaryPreference: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
               >
                 <option value="">Select preference</option>
                 <option value="standard">Standard</option>
@@ -292,7 +292,7 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Preferred Proteins
             </label>
             <div className="flex flex-wrap gap-2">
@@ -303,8 +303,8 @@ export default function SettingsPage() {
                   onClick={() => handleProteinToggle(protein)}
                   className={`px-4 py-2 rounded-lg border transition-colors ${
                     formData.preferredProteins.includes(protein)
-                      ? 'bg-blue-500 text-white border-blue-500'
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-blue-500'
+                      ? 'bg-blue-500 dark:bg-blue-600 text-white border-blue-500 dark:border-blue-600'
+                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400'
                   }`}
                 >
                   {protein}
@@ -323,11 +323,11 @@ export default function SettingsPage() {
 
       {/* Weight Check-in */}
       <Card>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Log Weight Check-in</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Log Weight Check-in</h2>
         <form onSubmit={handleAddWeight} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="newWeight" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="newWeight" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Weight (lbs)
               </label>
               <input
@@ -335,7 +335,7 @@ export default function SettingsPage() {
                 id="newWeight"
                 value={newWeight}
                 onChange={(e) => setNewWeight(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                 min="50"
                 max="1000"
                 step="0.1"
@@ -344,7 +344,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label htmlFor="weightNotes" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="weightNotes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Notes (optional)
               </label>
               <input
@@ -352,7 +352,7 @@ export default function SettingsPage() {
                 id="weightNotes"
                 value={weightNotes}
                 onChange={(e) => setWeightNotes(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                 placeholder="e.g., Morning weight, post-workout"
               />
             </div>
