@@ -1,12 +1,12 @@
 # FitFlow - Code Context Documentation
 
-**Last Updated:** January 7, 2026  
-**Build:** Production deployment on Azure Static Web Apps  
+**Last Updated:** January 9, 2026  
+**Build:** Production deployment on Azure Static Web Apps with Auth0 authentication  
 **Live URL:** https://blue-rock-0765eaa0f.1.azurestaticapps.net
 
 ## Overview
 
-FitFlow is an AI-powered fitness application that generates personalized workout plans and meal plans using Azure OpenAI (GPT-4.1-mini). The application features protein preference selection, meal regeneration, and stores all data in Azure Cosmos DB.
+FitFlow is an AI-powered fitness application that generates personalized workout plans and meal plans using Azure OpenAI (GPT-4.1-mini). The application features Auth0 authentication, user profile management, weight tracking, protein preference selection, meal regeneration, and stores all data in Azure Cosmos DB.
 
 ## Tech Stack
 
@@ -15,8 +15,10 @@ FitFlow is an AI-powered fitness application that generates personalized workout
 - **Build Tool:** Vite 7.2
 - **Styling:** Tailwind CSS 3.4
 - **Routing:** React Router DOM 7.1
+- **Authentication:** Auth0 React SDK (@auth0/auth0-react)
 - **State Management:** React hooks (useState, useEffect)
 - **UI Components:** Custom components with Tailwind
+- **PWA:** Manifest.json with iOS support
 
 ### Backend (Production)
 - **Platform:** Azure Functions v4 (Node.js 20)
@@ -46,9 +48,9 @@ fitness-app/
 │   │   │   ├── Card.tsx
 │   │   │   └── Loading.tsx
 │   │   ├── Layout/              # App layout components
-│   │   │   ├── Header.tsx
+│   │   │   ├── Header.tsx       # Auth-aware header with user menu
 │   │   │   ├── Footer.tsx       # Includes build number
-│   │   │   └── Navigation.tsx
+│   │   │   └── Navigation.tsx   # Bottom nav with auth-gated Profile
 │   │   ├── MealPlans/           # Meal planning features
 │   │   │   ├── MealCard.tsx     # Shows meal with regenerate/protein swap
 │   │   │   ├── MealPlan.tsx     # Full meal plan display
@@ -60,37 +62,48 @@ fitness-app/
 │   ├── hooks/                   # Custom React hooks
 │   │   ├── useMealPlans.ts      # Meal plan state management
 │   │   ├── useWorkouts.ts       # Workout state management
-│   │   └── useProgress.ts
+│   │   ├── useProgress.ts
+│   │   └── useAuth0Context.ts   # Auth0 authentication hook
+│   ├── providers/               # React context providers
+│   │   └── Auth0Provider.tsx    # Auth0 wrapper with config
 │   ├── services/                # API integration layer
 │   │   ├── api.ts               # Base API client with dynamic URL
 │   │   ├── mealService.ts       # Meal generation & management
 │   │   ├── workoutService.ts    # Workout generation
+│   │   ├── userService.ts       # User profile & weight tracking
 │   │   └── aiService.ts
 │   ├── types/                   # TypeScript type definitions
 │   │   ├── fitness.ts
 │   │   ├── meal.ts              # MealPlan, Meal, Ingredient, ProteinPreference
 │   │   ├── workout.ts           # Workout, Exercise, WorkoutBodyArea
-│   │   └── user.ts
+│   │   └── user.ts              # UserProfile, WeightCheckIn
 │   ├── pages/                   # Route components
 │   │   ├── Home.tsx
 │   │   ├── MealPlansPage.tsx
 │   │   ├── WorkoutsPage.tsx
-│   │   └── ProgressPage.tsx
+│   │   ├── ProgressPage.tsx     # Auth-gated with login prompt
+│   │   ├── SettingsPage.tsx     # Profile editor & weight tracking
+│   │   └── Callback.tsx         # Auth0 callback handler
 │   └── App.tsx                  # Main app component with routing
 ├── api/                         # Azure Functions (Production API)
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── env.ts           # Environment variable mapping
-│   │   │   ├── openai.ts        # Azure OpenAI client
-│   │   │   └── cosmosdb.ts      # Cosmos DB client
+│   │   │   ├── env.ts           # Environment variable mapping (COSMOS_* prefix)
+│   │   │   ├── openai.ts        # Azure OpenAI client (lazy-loaded)
+│   │   │   └── cosmosdb.ts      # Cosmos DB client (lazy-loaded)
 │   │   ├── functions/
-│   │   │   ├── generateMeal.ts  # POST /api/meals/generate
-│   │   │   └── generateWorkout.ts # POST /api/workouts/generate
+│   │   │   ├── generateMeal.ts         # POST /api/meals/generate
+│   │   │   ├── generateWorkout.ts      # POST /api/workouts/generate
+│   │   │   ├── getUserProfile.ts       # GET /api/users/{userId}/profile
+│   │   │   ├── updateUserProfile.ts    # PUT /api/users/{userId}/profile
+│   │   │   ├── createWeightCheckIn.ts  # POST /api/users/{userId}/weight-checkin
+│   │   │   └── getWeightHistory.ts     # GET /api/users/{userId}/weight-history
 │   │   ├── models/
 │   │   │   └── types.ts         # Shared type definitions
 │   │   ├── health.ts            # GET /api/health endpoint
-│   │   └── index.ts             # Entry point - imports all functions
+│   │   └── index.ts             # Entry point - imports all 7 functions
 │   ├── dist/                    # Compiled JavaScript (deployed)
+│   ├── local.settings.json      # Local development environment (not committed)
 │   ├── host.json                # Azure Functions runtime config
 │   ├── package.json             # Dependencies & build scripts
 │   └── tsconfig.json            # TypeScript compiler config
@@ -100,10 +113,13 @@ fitness-app/
 │       ├── services/
 │       └── index.ts
 ├── public/
-│   └── favicon.svg              # Pink gradient 'F' logo
+│   ├── favicon.svg              # Pink gradient 'F' logo
+│   ├── FitFlow.png              # App icon for PWA/iOS
+│   └── manifest.json            # PWA manifest
 ├── .github/workflows/
-│   └── azure-static-web-apps-blue-rock-0765eaa0f.yml
-├── index.html                   # Entry HTML (title: FitFlow)
+│   └── azure-static-web-apps-blue-rock-0765eaa0f.yml  # CI/CD with env vars
+├── index.html                   # Entry HTML with PWA meta tags
+├── .env                         # Local development (Auth0 config)
 ├── .env.production              # Production environment config
 └── package.json                 # Frontend dependencies
 
@@ -111,7 +127,17 @@ fitness-app/
 
 ## Key Features
 
-### 1. AI-Powered Meal Plans
+### 1. User Authentication & Profile Management
+- **Auth0 Integration:** OAuth 2.0 authentication with Google login
+- **Session Persistence:** LocalStorage cache with refresh tokens
+- **User Profile:** Name, email, age, height, weight, target weight
+- **Fitness Goals:** muscle, toning, cardio, weightloss, strength
+- **Dietary Preferences:** standard, vegetarian, keto, highprotein, glutenfree, dairyfree
+- **Preferred Proteins:** Multi-select from 9 protein options
+- **Weight Tracking:** Log weight check-ins with optional notes
+- **Protected Routes:** Auth guards on Profile and Progress pages
+
+### 2. AI-Powered Meal Plans
 - **Generation:** Uses Azure OpenAI GPT-4.1-mini to create personalized meal plans
 - **Customization:** 
   - Fitness goals: toning, muscle, cardio, weight loss, strength
@@ -122,7 +148,7 @@ fitness-app/
 - **Protein Swapping:** Change protein source for individual meals
 - **Mock Fallback:** Uses intelligent mock data when API unavailable
 
-### 2. AI-Powered Workouts
+### 2. AI-Powered Meal Plans
 - **Generation:** Creates workout plans based on:
   - Body areas: chest, back, shoulders, arms, legs, core, full body
   - Difficulty: beginner, intermediate, advanced
@@ -130,7 +156,7 @@ fitness-app/
 - **Exercise Details:** Sets, reps, duration, descriptions, form tips
 - **Calorie Estimation:** Estimated calories burned per workout
 
-### 3. Data Persistence
+### 3. AI-Powered Workouts
 - **Storage:** Azure Cosmos DB with containers for:
   - `meals` (partitioned by userId)
   - `workouts` (partitioned by userId)
@@ -198,6 +224,31 @@ Return JSON Response to Frontend
 #### `GET /api/health`
 Health check endpoint
 - **Response:** `{ status: "ok", timestamp: "...", message: "FitFlow API is running" }`
+
+#### `GET /api/users/{userId}/profile`
+Get user profile (auto-creates if doesn't exist)
+- **Response:** `UserProfile` object
+
+#### `PUT /api/users/{userId}/profile`
+Update user profile
+- **Request Body:** Partial `UserProfile` with Zod validation
+- **Response:** Updated `UserProfile` object
+
+#### `POST /api/users/{userId}/weight-checkin`
+Create weight check-in
+- **Request Body:**
+  ```json
+  {
+    "weight": 175.5,
+    "notes": "Morning weight"
+  }
+  ```
+- **Response:** Created `WeightCheckIn` object
+
+#### `GET /api/users/{userId}/weight-history?days=30`
+Get weight history
+- **Query Params:** `days` (default: 30)
+- **Response:** Array of `WeightCheckIn` objects
 
 #### `POST /api/meals/generate`
 Generate AI-powered meal plan
@@ -268,6 +319,30 @@ interface MealPlan {
   updatedAt: Date;
 }
 
+interface UserProfile {
+  id: string;              // Auth0 sub
+  email: string;
+  name: string;
+  picture?: string;        // Auth0 avatar
+  age?: number;
+  height?: number;         // inches
+  weight?: number;         // lbs
+  targetWeight?: number;   // lbs
+  fitnessGoal?: FitnessGoal;
+  dietaryPreference?: DietaryPreference;
+  preferredProteins?: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface WeightCheckIn {
+  id: string;
+  userId: string;
+  weight: number;          // lbs
+  date: Date;
+  notes?: string;
+}
+
 interface Meal {
   id: string;
   name: string;
@@ -309,16 +384,21 @@ interface Workout {
 Located in Azure Portal → Static Web App → Settings → Environment variables
 
 ```bash
-# Azure OpenAI
+# Auth0 (Frontend - set in GitHub workflow)
+VITE_AUTH0_DOMAIN=fitflow-dev.us.auth0.com
+VITE_AUTH0_CLIENT_ID=aWWGpnSMYs6qTucS5FTylighJuNCk4U0
+VITE_API_BASE_URL=https://blue-rock-0765eaa0f.1.azurestaticapps.net/api
+
+# Azure OpenAI (API runtime)
 AZURE_OPENAI_ENDPOINT=https://fitness-app-openai.openai.azure.com/
 AZURE_OPENAI_KEY=<your-key>
 AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1-mini
 AZURE_OPENAI_API_VERSION=2024-08-01-preview
 
-# Cosmos DB
-COSMOS_ENDPOINT=https://fitness-app-cosmos-1767729895.documents.azure.com:443/
+# Cosmos DB (API runtime)
+COSMOS_ENDPOINT=https://fitness-app-cosmos-1767729895.documents.azure.com
 COSMOS_KEY=<your-key>
-COSMOS_DATABASE_NAME=fitnessapp
+COSMOS_DATABASE_NAME=FitnessDB
 COSMOS_CONTAINER_MEALS=meals
 COSMOS_CONTAINER_WORKOUTS=workouts
 COSMOS_CONTAINER_USERS=users
@@ -331,16 +411,18 @@ NODE_ENV=production
 ### Local Development (.env)
 
 ```bash
-# Frontend (in root .env)
-VITE_API_BASE_URL=http://localhost:3000/api
+# Frontend Auth0 config (in root .env)
+VITE_AUTH0_DOMAIN=fitflow-dev.us.auth0.com
+VITE_AUTH0_CLIENT_ID=aWWGpnSMYs6qTucS5FTylighJuNCk4U0
+VITE_API_BASE_URL=http://localhost:7071/api
 
-# Backend (server/.env)
+# Backend (api/local.settings.json)
+COSMOS_ENDPOINT=https://fitness-app-cosmos-1767729895.documents.azure.com
+COSMOS_KEY=<your-key>
+COSMOS_DATABASE_NAME=FitnessDB
 AZURE_OPENAI_ENDPOINT=https://fitness-app-openai.openai.azure.com/
 AZURE_OPENAI_KEY=<your-key>
 AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1-mini
-AZURE_OPENAI_API_VERSION=2024-08-01-preview
-AZURE_COSMOS_ENDPOINT=https://fitness-app-cosmos-1767729895.documents.azure.com:443/
-AZURE_COSMOS_KEY=<your-key>
 ```
 
 ### Production Frontend (.env.production)
@@ -349,16 +431,19 @@ AZURE_COSMOS_KEY=<your-key>
 VITE_API_BASE_URL=/api
 ```
 
+**Note:** Auth0 env vars are injected during build via GitHub Actions workflow.
+
 ## Development Workflow
 
 ### Local Development
 
-1. **Start Backend (Express Server):**
+1. **Start Backend (Azure Functions):**
    ```bash
-   cd server
+   cd api
    npm install
-   npm run dev
-   # Runs on http://localhost:3000
+   # Copy local.settings.json with your credentials
+   func start
+   # Runs on http://localhost:7071
    ```
 
 2. **Start Frontend:**
@@ -368,7 +453,10 @@ VITE_API_BASE_URL=/api
    # Runs on http://localhost:5173
    ```
 
-3. **Frontend calls:** `http://localhost:3000/api`
+3. **Frontend calls:** `http://localhost:7071/api`
+4. **Auth0:** Login with Google OAuth
+
+**PowerShell Note:** If `func start` fails in PowerShell, use cmd terminal instead.
 
 ### Production Deployment
 
@@ -378,12 +466,14 @@ VITE_API_BASE_URL=/api
    - Checkout code
    - Setup Node.js 20
    - Build API: `cd api && npm ci && npm run build`
-   - Build frontend: `npm run build`
+   - Build frontend with env vars (VITE_AUTH0_DOMAIN, VITE_AUTH0_CLIENT_ID, VITE_API_BASE_URL)
    - Deploy to Azure Static Web Apps
 4. **Deployment Target:**
    - Frontend: `dist/` folder
    - API: `api/` folder (with compiled `dist/` inside)
 5. **Live URL:** https://blue-rock-0765eaa0f.1.azurestaticapps.net
+
+**Important:** Vite env vars are baked into the build at build time, not runtime. Environment variables configured in Azure Portal are only available to API functions.
 
 ## Important Files
 
@@ -475,7 +565,27 @@ Return JSON:
 
 ### ✅ Working Features
 
-1. **Meal Plan Generation**
+1. **User Authentication**
+   - Auth0 OAuth 2.0 with Google login
+   - Session persistence with refresh tokens
+   - Auth-gated routes (Profile, Progress)
+   - User avatar display in header
+
+2. **User Profile Management**
+   - Profile creation on first login
+   - Personal metrics (age, height, weight, target weight)
+   - Fitness goal selection
+   - Dietary preference selection
+   - Preferred protein multi-select
+   - Profile updates saved to Cosmos DB
+
+3. **Weight Tracking**
+   - Weight check-in logging
+   - Optional notes for each entry
+   - 30-day weight history retrieval
+   - Stored in Cosmos DB progress container
+
+4. **Meal Plan Generation**
    - AI-generated meals with Azure OpenAI
    - Specific protein sources (not generic "Protein Source")
    - Dietary preference filtering
@@ -488,19 +598,20 @@ Return JSON:
    - "Change Protein" for protein swapping
    - Real-time macro recalculation
 
-3. **Workout Generation**
+5. **Workout Generation**
    - AI-generated workouts
    - Body area targeting
    - Difficulty levels
    - Exercise details with form tips
 
-4. **UI/UX**
+6. **UI/UX**
    - Responsive design (mobile/desktop)
    - Loading states for async operations
    - Pink gradient branding (#E91E63 → #F06292)
    - Build number in footer
+   - PWA support with iOS home screen icons
 
-5. **Infrastructure**
+7. **Infrastructure**
    - Azure Static Web Apps hosting
    - Azure Functions API
    - Azure OpenAI integration
@@ -511,8 +622,7 @@ Return JSON:
 
 - Meal regeneration (uses mock data, not backend endpoint)
 - Protein swapping (uses mock data)
-- Progress tracking (UI only)
-- User authentication (placeholder userId: "dev-user-123")
+- Progress charts (UI placeholder)
 
 ### 🎯 Potential Next Features
 
@@ -522,25 +632,18 @@ Return JSON:
    - `GET /api/meals` - Retrieve user's saved meal plans
    - `GET /api/workouts` - Retrieve user's saved workouts
 
-2. **User Features:**
-   - User authentication (Azure AD B2C)
-   - User profile management
-   - Preferences saving
-   - Meal/workout history
-
-3. **Progress Tracking:**
-   - Weight tracking over time
-   - Workout completion tracking
+2. **Progress Tracking:**
+   - Weight charts (Chart.js or Recharts)
+   - Progress visualization dashboard
    - Calorie burn tracking
-   - Progress charts (Chart.js or Recharts)
+   - Workout completion tracking
 
-4. **Social Features:**
+3. **Enhanced Features:**
+   3. **Enhanced Features:**
+   - Meal plan history viewing
+   - Workout history viewing
    - Share meal plans
    - Share workout plans
-   - Community features
-
-5. **Enhanced AI:**
-   - Meal plan variations
    - Grocery list generation
    - Recipe substitutions
    - Workout progression plans
@@ -565,6 +668,9 @@ Footer displays current build number and environment:
 2. **Functions not deployed:** Verify `api/.funcignore` doesn't exclude `dist/`
 3. **TypeScript errors:** Run `npm run build` in both root and `api/` directories
 4. **Missing environment variables:** Check Azure Portal → Static Web App → Environment variables
+5. **Auth0 client_id empty:** Verify GitHub Actions workflow has env vars in build step
+6. **Cosmos DB 401 error:** Ensure COSMOS_ENDPOINT doesn't include `:443/` suffix
+7. **func start fails:** Use cmd terminal instead of PowerShell on Windows
 
 ## Git Repository
 
@@ -578,8 +684,9 @@ Footer displays current build number and environment:
 - **Region:** East US
 - **Static Web App:** blue-rock-0765eaa0f
 - **Azure OpenAI:** fitness-app-openai (gpt-4.1-mini deployment)
-- **Cosmos DB:** fitness-app-cosmos-1767729895 (Serverless)
+- **Cosmos DB:** fitness-app-cosmos-1767729895 (Serverless, FitnessDB database)
+- **Auth0 Tenant:** fitflow-dev.us.auth0.com
 
 ---
 
-**For LLM Context:** This application is a production-ready AI fitness app using Azure services. The frontend is React/TypeScript/Tailwind, backend is Azure Functions with TypeScript, AI is Azure OpenAI GPT-4.1-mini, and database is Cosmos DB. All code follows TypeScript strict mode and uses modern React patterns (hooks, functional components). The app generates personalized meal plans and workouts based on user preferences.
+**For LLM Context:** This application is a production-ready AI fitness app using Azure services with Auth0 authentication. The frontend is React/TypeScript/Tailwind with Auth0 React SDK, backend is Azure Functions with TypeScript, AI is Azure OpenAI GPT-4.1-mini, and database is Cosmos DB. All code follows TypeScript strict mode and uses modern React patterns (hooks, functional components). The app features OAuth 2.0 authentication, user profile management, weight tracking, and generates personalized meal plans and workouts based on user preferences. Phase 2 (Authentication & User Management) is complete.
