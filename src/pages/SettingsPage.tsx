@@ -131,13 +131,13 @@ export default function SettingsPage() {
   };
 
   if (authLoading || isLoading) {
-    return <Loading text="Loading settings..." />;
+    return <Loading text="Loading profile..." />;
   }
 
   return (
     <div className="space-y-6 max-w-4xl">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
         <p className="text-gray-600 mt-2">
           Manage your profile and preferences
         </p>

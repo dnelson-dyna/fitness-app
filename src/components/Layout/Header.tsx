@@ -57,7 +57,7 @@ export default function Header() {
                       to="/settings"
                       className="text-gray-700 hover:text-primary-600 transition-colors font-medium"
                     >
-                      Settings
+                      Profile
                     </Link>
                     <Button
                       variant="secondary"
@@ -142,7 +142,7 @@ export default function Header() {
                         className="text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Settings
+                        Profile
                       </Link>
                       <button
                         onClick={() => {

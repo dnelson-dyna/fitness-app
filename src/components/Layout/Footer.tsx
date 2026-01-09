@@ -22,7 +22,7 @@ export default function Footer() {
               About
             </Link>
             <Link to="/settings" className="text-gray-600 hover:text-primary-600 text-sm transition-colors">
-              Settings
+              Profile
             </Link>
             <Link to="/feedback" className="text-gray-600 hover:text-primary-600 text-sm transition-colors">
               Feedback

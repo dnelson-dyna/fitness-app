@@ -72,7 +72,7 @@ export default function Navigation() {
     },
     {
       path: '/settings',
-      label: 'Settings',
+      label: 'Profile',
       requiresAuth: true,
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,7 +93,7 @@ export default function Navigation() {
     },
   ];
 
-  // Filter nav items - only show Settings if authenticated
+  // Filter nav items - only show Profile if authenticated
   const visibleNavItems = navItems.filter(item => 
     !item.requiresAuth || (item.requiresAuth && isAuthenticated)
   );
